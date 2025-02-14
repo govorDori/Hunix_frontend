@@ -1,0 +1,8 @@
+.Home{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 100px;
+    top: 200px;
+    background-color: blue;
+}
