@@ -73,7 +73,7 @@ export const Home = () => {
                 {/* Jobb oszlop (kép) */}
                 <div className='lg:flex flex-col w-full hidden md:w-[49%] min-w-[10%]'>
                     <img
-                        src="./HunixTestCar.jpg"
+                        src="HunixTestCar.jpg"
                         alt=""
                         className='w-full h-[375px] object-cover rounded-lg'
                     />
