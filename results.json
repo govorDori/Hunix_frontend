@@ -1,0 +1,62 @@
+{
+	"numTotalTestSuites": 2,
+	"numPassedTestSuites": 2,
+	"numFailedTestSuites": 0,
+	"numPendingTestSuites": 0,
+	"numTotalTests": 2,
+	"numPassedTests": 2,
+	"numFailedTests": 0,
+	"numPendingTests": 0,
+	"numTodoTests": 0,
+	"snapshot": {
+		"added": 0,
+		"failure": false,
+		"filesAdded": 0,
+		"filesRemoved": 0,
+		"filesRemovedList": [],
+		"filesUnmatched": 0,
+		"filesUpdated": 0,
+		"matched": 0,
+		"total": 0,
+		"unchecked": 0,
+		"uncheckedKeysByFile": [],
+		"unmatched": 0,
+		"updated": 0,
+		"didUpdate": false
+	},
+	"startTime": 1744282188358,
+	"success": true,
+	"testResults": [
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": [
+						"Something truthy and falsy"
+					],
+					"fullName": "Something truthy and falsy True to be true",
+					"status": "passed",
+					"title": "True to be true",
+					"duration": 1.2557000000000471,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": [
+						"Something truthy and falsy"
+					],
+					"fullName": "Something truthy and falsy False to be false",
+					"status": "passed",
+					"title": "False to be false",
+					"duration": 0.17190000000005057,
+					"failureMessages": [],
+					"meta": {}
+				}
+			],
+			"startTime": 1744282189404,
+			"endTime": 1744282189405.2556,
+			"status": "passed",
+			"message": "",
+			"name": "C:/Delete/Govorkovics Dóra 13A/hunixFrontend/Hunix_frontend/src/tests/test1.test.js"
+		}
+	]
+}
