@@ -12,6 +12,7 @@ import { Garage } from './pages/Garage';
 import { AddEditPost } from './pages/AddEditPost';
 import { PwReset } from './pages/PwReset';
 import Schema from './components/Schema';
+import { AllAds } from './pages/AllAds';
 
 
 
@@ -26,7 +27,9 @@ const router = createBrowserRouter([
       { path: '/profile', element: <Profile /> },
       { path: '/garage', element: <Garage /> },
       { path: '/postcreate', element: <AddEditPost /> },
+      {path:'/update/:id',element:<AddEditPost/>},
       { path: '/pwreset', element: <PwReset /> },
+      { path: '/allads', element: <AllAds /> },
 	  { path: '/schema', element: <Schema /> },
     ]
     
