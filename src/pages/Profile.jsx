@@ -1,9 +1,38 @@
 import React from 'react'
+import { useContext } from 'react';
 import { useState } from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
+import { db, UserContext } from '../utility/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { Toastify } from '../components/Toastify';
+import UserAds from '../components/UserAds';
+import { Detail } from '../components/Detail';
+
+
 
 export const Profile = () => {
+    const { user, updateUser, msg } = useContext(UserContext)
+    const [loading, setLoading] = useState(false)
+    const [avatar, setAvatar] = useState(null) //profilkép betöltése
 
+    const [selectedAd, setSelectedAd] = useState(null); // kiválasztott hirdetés
+    const [isDetailVisible, setIsDetailVisible] = useState(false); //Detail panel megjelenítése
+
+    //ideiglenes userdata
+    const [userData, setUserData] = useState(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        !user && navigate('/')
+    }, [user])
+
+
+
+    //Modosítás menü toggle
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -11,7 +40,86 @@ export const Profile = () => {
 
     };
 
+    //adatok betöltése rosszul (ebbe a formában azért nem megfelelő, mivel ez csak a user adatait olvassa ki és az extrán tárolt dolgokat nem (pl tel szám, cím))
+    //a USER adati a firestore Auth-ban vannak tárolva ami ez esetben csak email meg displayname
 
+    // const { register, handleSubmit, setValue } = useForm();
+
+    // useEffect(() => {
+    //   if (user) {
+    //     setValue('displayName', user.displayName || '');
+    //     setValue('phoneNumber', user.phoneNumber || 'Nem található');
+    //     setValue('address', user.address || 'Nem található');
+    //   }
+    // }, [user]);
+
+    //Felhasználó adatainak lekérése( ha nem müködne a tel. szám és a cím :(( )
+    //Ez a megoldás azért optimálisabb mert a GetDoc a Users kollekciobol szedi ki az adatokat ezáltal a extra dolgokat is le lehet kérni ( tel szám, cím )
+    const {
+        register,
+        handleSubmit,
+        setValue, //Fontos!
+        formState: { errors },
+    } = useForm();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!user) return;
+
+            const userDocRef = doc(db, 'Users', user.uid);
+            const docSnap = await getDoc(userDocRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+
+                //Input mezőkhöz rendelt infók (remélhetőleg módosíthatóak lesznek )
+                setValue('phoneNumber', data.phoneNumber || '');
+                setValue('address', data.address || '');
+                setValue('displayName', data.displayName || '');
+            }
+        };
+
+        fetchUserData();
+    }, [user, setValue]); //Setvalue setelés
+
+
+    //Profil adatok módosítása
+
+    const onSubmit = async (data) => {
+        setLoading(true);
+        try {
+            // Ha van fájl, töltsük fel (pl. profilkép) később hasznos lesz by:nndr
+            const file = data?.file ? data?.file[0] : null;
+            const { url, id } = file ? await uploadFile(file) : {};
+
+            // Frissítés Firestore-ban
+            const userDocRef = doc(db, "Users", user.uid);
+            await updateDoc(userDocRef, {
+                displayName: data.displayName,
+                phoneNumber: data.phoneNumber,
+                address: data.address,
+            });
+
+            // Auth profil frissítés (eltérő a kollekciostól de profilnál hasznos lesz!! by: nndr)
+            await updateUser(data.displayName, file ? `${url}/${id}` : null);
+
+
+        } catch (error) {
+            console.error("Profil frissítés hiba:", error);
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
+
+    //Egy hirdetés kiválasztása az általunk hirdetettek közül
+    const handleAdSelect = (ad) => {
+        setSelectedAd(ad); // Kiválasztott hirdetés beállítása
+        setIsDetailVisible(true); // Detail panel megjelenítése
+    };
+
+    
 
     return (
         <div className='md:flex lg:flex-row lg:items-stretch justify-center w-[100%] p-2 m-auto  gap-2  lg:w-[100%]'>
@@ -26,10 +134,17 @@ export const Profile = () => {
                         className='rounded-full object-cover bg-white w-[50px] h-[50px] shadow shadow-gray-400/50'
                     />
                 </div>
-                <p className='text-[#939393] mt-[-10px]'>--Ember neve--</p>
+                <p>Jelenlegi felhasználónév:</p>
+                <input
+                    {...register('displayName')}
+                    defaultValue={user?.displayName || ''}
+                    className='text-[#939393] mt-[-10px] text-center'
+                    placeholder="Felhasználónév"
+                    disabled
+                />
 
                 <div className='flex bg-BaseGreen items-center justify-center text-center rounded-md'>
-                    <input className='text-black  rounded-md flex mx-auto w-[80%] font-semibold' type="file" />
+                    <input className='text-black  rounded-md flex mx-auto w-[80%] font-semibold' type="file"  {...register('file')}/>
                 </div>
                 <button className='mt-2  h-max p-2.5 break-words rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95  transition-all cursor-pointer text-center'>
                     Profilkép módosítása
@@ -42,66 +157,46 @@ export const Profile = () => {
                 </button>
 
 
-                <div className={`${isMenuOpen ? 'block' : 'hidden'}  w-max flex flex-col gap-y-2`}>
+                <form onSubmit={handleSubmit(onSubmit)} className={`${isMenuOpen ? 'block' : 'hidden'} w-max flex flex-col gap-y-2`}>
+
                     {/* Név módosítás */}
                     <div className='border rounded-md border-gray-200 flex flex-col gap-y-2 p-2'>
-                        <h1 className='text-lg'>Mév módosítása</h1>
+                        <h1 className='text-lg'>Név módosítása</h1>
                         <input
+                            {...register('displayName')}
                             type="text"
                             className='border-b border-BaseGreen outline-0 text-lg p-1 bg-gray-100 rounded-md'
-                            name="username"
-
                         />
-
-
-
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Módosítás
-                        </button>
                     </div>
 
-                    {/* Telefonszám modositás */}
+                    {/* Telefonszám módosítás */}
                     <div className='border rounded-md border-gray-200 flex flex-col gap-y-2 p-2'>
                         <h1 className='text-lg'>Telefonszám módosítása</h1>
                         <input
+                            {...register('phoneNumber')}
                             type="text"
                             className='border-b border-BaseGreen outline-0 text-lg p-1 bg-gray-100 rounded-md'
-                            name="phonenumber"
-
                         />
-
-
-
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Módosítás
-                        </button>
                     </div>
 
-                    {/* Jelszó módosítás */}
+                    {/* Lakcím módosítás */}
                     <div className='border rounded-md border-gray-200 flex flex-col gap-y-2 p-2'>
-
-                        <h1 className='text-lg'>Új jelszó beállítása</h1>
+                        <h1 className='text-lg'>Lakcím módosítás</h1>
                         <input
-                            type="password"
+                            {...register('address')}
+                            type="text"
                             className='border-b border-BaseGreen outline-0 text-lg p-1 bg-gray-100 rounded-md'
-                            name="password"
-                            placeholder='Jelenlegi jelszó'
                         />
-
-                        <input
-                            type="password"
-                            className='border-b border-BaseGreen outline-0 text-lg p-1 bg-gray-100 rounded-md'
-                            name="password"
-                            placeholder='Új jelszó'
-                        />
-
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Jelszó módosítása
-                        </button>
                     </div>
 
-
-                </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                        {loading ? 'Mentés...' : 'Mentés'}
+                    </button>
+                    {msg && <Toastify {...msg} />}
+                </form>
 
             </div>
 
@@ -111,44 +206,15 @@ export const Profile = () => {
 
                 <div className='gap-1 sm:grid grid-cols-2'>
 
-                    <div className='border rounded-md border-gray-300 w-full p-2 mb-1'>
-                        <h1 className='text-2xl font-bold'>Hirdetés neve: <span className='text-green-400'>Teszt</span></h1>
-                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, deleniti repellat. Distinctio mollitia alias quod nemo asperiores provident ratione voluptates earum, cumque in libero dolorem animi vitae? Explicabo, alias iure?</h2>
-                        <div className='gap-x-3 flex flex-wrap'>
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Megtekintés
-                        </button>
-                        <button disabled className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Módosítás
-                        </button>
-                        </div>
-                    </div>
+                    {/* A felhasználó által hirdetett hirdetések megjelenítése ! */}
+                    {user && <UserAds userId={user.uid} onAdSelect={handleAdSelect} />}
 
-                    <div className='border rounded-md border-gray-300 w-full p-2 mb-1'>
-                        <h1 className='text-2xl font-bold'>Hirdetés neve: <span className='text-green-400'>Teszt</span></h1>
-                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, deleniti repellat. Distinctio mollitia alias quod nemo asperiores provident ratione voluptates earum, cumque in libero dolorem animi vitae? Explicabo, alias iure?</h2>
-                        <div className='gap-x-3 flex flex-wrap'>
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Megtekintés
-                        </button>
-                        <button disabled className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Módosítás
-                        </button>
-                        </div>
-                    </div>
 
-                    <div className='border rounded-md border-gray-300 w-full p-2 mb-1'>
-                        <h1 className='text-2xl font-bold'>Hirdetés neve: <span className='text-green-400'>Teszt</span></h1>
-                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, deleniti repellat. Distinctio mollitia alias quod nemo asperiores provident ratione voluptates earum, cumque in libero dolorem animi vitae? Explicabo, alias iure?</h2>
-                        <div className='gap-x-3 flex flex-wrap'>
-                        <button className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Megtekintés
-                        </button>
-                        <button disabled className='mt-2  h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                            Módosítás
-                        </button>
-                        </div>
-                    </div>
+                    {/* Detail panel megjelenítése, ha kiválasztottunk egy hirdetést */}
+                    {isDetailVisible && selectedAd && (
+                        <Detail ad={selectedAd} onClose={() => setIsDetailVisible(false)} />
+                    )}
+
 
                 </div>
 
