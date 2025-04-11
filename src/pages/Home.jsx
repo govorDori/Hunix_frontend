@@ -4,9 +4,11 @@ import { Categs } from '../components/Categs';
 import { Allitem } from '../components/Allitem';
 import { Footer } from '../components/Footer';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -31,13 +33,13 @@ export const Home = () => {
                 <div className='flex md:gap-9 gap-2 w-max mx-auto flex-wrap justify-center'>
                     <div className='flex relative flex-col'>
                         <button onClick={toggleMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
-                            Kategóriák {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
+                            Márkák {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
                         </button>
 
                         <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute w-full text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
-                                <button>Kateg1</button>
-                                <button>Kateg2</button>
-                                <button>Kateg3</button>
+                                <button>Márka</button>
+                                <button>Márka</button>
+                                <button>Márka</button>
                             </div>
 
 
@@ -57,9 +59,11 @@ export const Home = () => {
                 {/* Bal oszlop*/}
                 <div className='md:flex lg:flex-col  lg:items-stretch items-center justify-center w-full   gap-2  lg:w-[50%] min-w-[10%]'>
                     <div className='shadow-[#7C7979] md:h-full md:w-full min-w-[10%] max-w-[100%]  mx-auto shadow-md p-4 rounded-lg bg-white space-y-2'>
-                        <h1 className='tracking-wide text-xl'>Böngéssz alkatrészeink közt!</h1>
-                        <p className='text-[#939393] mt-[-10px]'>Találd meg a számodra tökéletes alkatrészt.</p>
-                        <button className='mt-2 p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 h-[45px] transition-all cursor-pointer text-center'>
+                        <h1 className='tracking-wide text-xl'>Böngéssz hirdetéseink közt!</h1>
+                        <p className='text-[#939393] mt-[-10px]'>Találd meg a számodra járművet.</p>
+                        <button
+                        onClick={() => navigate('./allads')}
+                        className='mt-2 p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 h-[45px] transition-all cursor-pointer text-center'>
                             Megtekintés
                         </button>
                     </div>

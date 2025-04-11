@@ -103,10 +103,10 @@ const handleAdSelect = (ad) => {
                             <img
                                 src={ad.photoURL || "https://via.placeholder.com/150"}
                                 className="rounded-xl object-cover mt-2 mb-2 shadow-md shadow-black/30"
-                                alt={ad.adName}
+                                alt="Foto helye"
                             />
                             <p className="text-gray-400 break-words">{ad.description}</p>
-                            <h2>Lóerő: {ad.horsepower}</h2>
+                            <h2>Lóerő: {ad.horsePower}</h2>
                             <h2>Ár: {ad.price} Ft</h2>
 
                             <button

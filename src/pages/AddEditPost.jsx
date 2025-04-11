@@ -95,12 +95,12 @@ export const AddEditPost = () => {
   };
 
   return (
-    <div className="p-3 bg-BaseGreen flex flex-col items-center shadow-md shadow-black/30 rounded-md md:w-8/12 w-max max-w-3xl m-2 mx-auto text-center">
+    <div className="p-3 bg-BaseGreen/60 flex flex-col items-center shadow-md shadow-black/30 rounded-md md:w-8/12 w-max max-w-3xl m-2 mx-auto text-center">
       <h1 className="text-2xl font-bold mb-4">{id ? "Hirdetés módosítása" : "Új hirdetés hozzáadása"}</h1>
 
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="mb-4">
-          <label>Hirdetés neve:</label>
+        <div className="mb-4 gap-2">
+          <label className="mr-3">Hirdetés neve:</label>
           <input
             type="text"
             className="border-b border-BaseGreen outline-0 text-xl p-1 bg-gray-100 rounded-md"
@@ -111,7 +111,7 @@ export const AddEditPost = () => {
         </div>
 
         <div className="mb-4">
-          <label>Fotó a hirdetendő tárgyról:</label>
+          <label className="mr-3">Fotó a hirdetendő tárgyról:</label>
           <input
             type="file"
             className="p-1 border rounded-md w-30 mx-auto"
@@ -191,7 +191,7 @@ export const AddEditPost = () => {
 
         <button
           type="submit"
-          className="border p-2 rounded-md bg-BaseGreen text-white"
+          className="border p-2 rounded-md bg-BaseGreen text-black"
         >
           {id ? "Módosítás" : "Meghirdetem"}
         </button>
