@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../utility/UserContext';
 import { db } from '../utility/UserContext'; // Firebase db
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayRemove } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { Detail } from '../components/Detail';
 
@@ -26,7 +26,8 @@ export const Garage = () => {
                     // Lekérjük a felhasználó adatokat, hogy megtudjuk, mik a mentett hirdetései
                     const userRef = doc(db, "Users", user.uid);
                     const userSnap = await getDoc(userRef);
-
+                    console.log(userSnap.id);
+                    
                     if (userSnap.exists()) {
                         const garage = userSnap.data().garage || []; // A 'garage' mezőből szedjük ki a mentett hirdetéseket
 
@@ -36,9 +37,14 @@ export const Garage = () => {
                                 collection(db, "Ads"),
                                 where("__name__", "in", garage) // Azonosító alapján kéri le a hirdetéseket
                             );
+                            
+                        
                             const querySnapshot = await getDocs(adsQuery);
-                            const ads = querySnapshot.docs.map(doc => doc.data()); //adatok kinyerése
+                            
+                            const ads = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}) ); //adatok kinyerése doc.id hozzafűzése az ads hoz, törlés miatt
+
                             setGarageAds(ads); // Seteljük a hirdetéseket
+
                         }
                     }
                 } catch (error) {
@@ -57,9 +63,10 @@ export const Garage = () => {
             await updateDoc(userRef, {
                 garage: arrayRemove(adId) // Eltávolítjuk az adId-t a garage tömbből a firestore-ban
             });
-    
+            
             // Ha sikerült
             alert('A hirdetés törölve lett a garázsból!');
+            navigate('/')
         } catch (error) {
             console.error('Hiba történt a garázsban tárolt jármű törléskor:', error);
             alert('Hiba történt a garázs törléskor!');
@@ -90,6 +97,9 @@ const handleAdSelect = (ad) => {
         );
     }
 
+    console.log(garageAds);
+    
+
     return (
         <div className="shadow-[#7C7979] md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto shadow-md p-4 rounded-lg bg-white space-y-2">
             <div className="md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto rounded-lg bg-white space-y-2">
@@ -116,7 +126,7 @@ const handleAdSelect = (ad) => {
                             </button>
 
                             <button
-                            onClick={() => handleDelete(adId)}
+                            onClick={() => handleDelete(ad.id)}
                             className="mt-2 w-full h-max p-2.5 rounded-sm pl-6 pr-6 bg-red-500 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center">
                                 Törlés
                             </button>

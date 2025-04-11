@@ -40,7 +40,7 @@ const UserAds = ({ userId, onAdSelect }) => {
             ) : (
                 userAds.map((ad) => (
                     <div key={ad.id} className="border rounded-md border-gray-300 w-full p-2 mb-1">
-                        <h1 className="text-2xl font-bold">Hirdetés neve: <span className="text-green-400">{ad.displayName}</span></h1>
+                        <h1 className="text-2xl font-bold">Hirdetés neve: <span className="text-green-400">{ad.adName}</span></h1>
                         <h2 className='break-words'>{ad.description}</h2>
                         <div className="gap-x-3 flex flex-wrap">
                             {/* Megtekintés gomb */}
