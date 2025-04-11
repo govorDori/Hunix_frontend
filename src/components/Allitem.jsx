@@ -1,12 +1,23 @@
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import React from 'react'
 import { useRef } from 'react';
-import { GoTriangleLeft } from "react-icons/go";
-import { GoTriangleRight } from "react-icons/go";
+import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
+import { getAds } from '../utility/crudUtility'; // getAds import
+import { Detail } from './Detail'; // Detail import
 
 export const Allitem = () => {
+    const [ads, setAds] = useState([]); // Hirdetéseket tároló állapot
+    const [selectedAd, setSelectedAd] = useState(null); // Kiválasztott hirdetés
     const scrollContainerRef = useRef(null);
-    const scrollContainerRef2 = useRef(null);
+
+    // Hirdetések betöltése
+    useEffect(() => {
+        const fetchAds = async () => {
+            const adsData = await getAds(); // Adatok betöltése
+            setAds(adsData); // Seteljük a hirdetéseket
+        };
+        fetchAds();
+    }, []);
 
     const scrollLeft = () => {
         if (scrollContainerRef.current) {
@@ -20,16 +31,12 @@ export const Allitem = () => {
         }
     };
 
-    const scrollLeft2 = () => {
-        if (scrollContainerRef2.current) {
-            scrollContainerRef2.current.scrollBy({ left: -200, behavior: 'smooth' });
-        }
+    const handleAdClick = (ad) => {
+        setSelectedAd(ad); // Kiválasztott hirdetés beállítása
     };
 
-    const scrollRight2 = () => {
-        if (scrollContainerRef2.current) {
-            scrollContainerRef2.current.scrollBy({ left: 200, behavior: 'smooth' });
-        }
+    const handleCloseDetail = () => {
+        setSelectedAd(null); // Bezárás
     };
 
     return (
@@ -37,10 +44,10 @@ export const Allitem = () => {
             <h1 className='tracking-wide text-xl'>Hírdetések</h1>
             <p className='text-[#939393] mt-[-10px]'>Eladók által meghirdetett termékek.</p>
 
-            {/* Autók szekció, végig kell majd mappolni az autók kategórián azon belül ár meg terméknév és képen is. */}
             <h1 className='text-[#939393] text-2xl mb-1'>Autók</h1>
+
             {/* Görgetés */}
-            <div className='relative '>
+            <div className='relative'>
 
                 {/* Balra görgetés gombja */}
                 <button
@@ -50,34 +57,31 @@ export const Allitem = () => {
                     <GoTriangleLeft />
                 </button>
 
-                {/* Kategóriák konténere */}
-                <div
-                    ref={scrollContainerRef}
-                    className='flex overflow-x-auto gap-4 p-2 scrollbar-hide'
-
-                >
-                    {/* Egy map ami teszteli sok kategória esetén mi történik(később hasznos lesz) */}
-                    {[...Array(10)].map((e, index) => (
-                        <motion.div key={index}
-                        className='flex-shrink-0 justify-center flex-col flex p-2 bg-white shadow-[#7C7979] shadow-md text-left rounded-md'
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                            duration: 0.8,
-                            delay: 0.5 + index/10,
-                            ease: [0, 0.71, 0.2, 1.01],
-                        }}
-
+                {/* Hirdetések konténere */}
+                <div ref={scrollContainerRef} className='flex overflow-x-auto gap-4 p-2 scrollbar-hide'>
+                    {/* Hirdetések megjelenítése */}
+                    {ads.map((ad) => (
+                        <motion.div 
+                            key={ad.id} 
+                            className='flex-shrink-0 justify-center flex-col flex p-2 bg-white shadow-[#7C7979] shadow-md text-left rounded-md'
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.8,
+                                delay: 0.5,
+                                ease: [0, 0.71, 0.2, 1.01],
+                            }}
+                            onClick={() => handleAdClick(ad)} // Hirdetésre kattintás
                         >
                             <div>
-                            <img
-                                src="null"
-                                alt=""
-                                className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
-                            />
-                            <p className='text-[#939393]'>TermékNeve{index}</p>
-                            <p className='text-[#939393] text-sm'>Ár:100.000</p>
-                        </div>
+                                <img
+                                    src={ad.photoURL || 'https://via.placeholder.com/130x110'} // Kép URL vagy placeholder
+                                    alt={ad.displayName || 'Hirdetés'}
+                                    className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
+                                />
+                                <p className='text-[#939393]'>{ad.displayName}</p>
+                                <p className='text-[#939393] text-sm'>Ár: {ad.price || 'N/A'}</p>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
@@ -85,17 +89,14 @@ export const Allitem = () => {
                 {/* Jobbra görgetés gombja */}
                 <button
                     onClick={scrollRight}
-                    className='absolute right-0 top-1/2 transform -translate-y-1/2  bg-white p-2 rounded-full shadow-md shadow-black z-10'
+                    className='absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md shadow-black z-10'
                 >
                     <GoTriangleRight />
                 </button>
             </div>
 
-
-
-            
-            
+            {/* Ha kattintottunk egy hirdetésre bejön a Detail ablak a hirdetés információival.*/}
+            {selectedAd && <Detail ad={selectedAd} onClose={handleCloseDetail} />}
         </div>
     );
-}
-
+};
