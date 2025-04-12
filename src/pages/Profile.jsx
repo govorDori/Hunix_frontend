@@ -10,11 +10,12 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Toastify } from '../components/Toastify';
 import UserAds from '../components/UserAds';
 import { Detail } from '../components/Detail';
+import { useConfirm } from 'material-ui-confirm';
 
 
 
 export const Profile = () => {
-    const { user, updateUser, msg } = useContext(UserContext)
+    const { user, updateUser, msg, deleteAccount, logoutUser, setMsg } = useContext(UserContext)
     const [loading, setLoading] = useState(false)
     const [avatar, setAvatar] = useState(null) //profilkép betöltése
 
@@ -30,6 +31,7 @@ export const Profile = () => {
         !user && navigate('/')
     }, [user])
 
+    const confirm = useConfirm()
 
 
     //Modosítás menü toggle
@@ -119,7 +121,35 @@ export const Profile = () => {
         setIsDetailVisible(true); // Detail panel megjelenítése
     };
 
-    
+
+    const handleDelete = async () => {
+        try {
+            const confirmed = await confirm({
+                description: "Ez a művelet nem vonható vissza!",
+                confirmationText: "Igen",
+                cancellationText: "Mégsem",
+                title: "Biztos ki szeretnéd törölni a fiókod?"
+            })
+
+            if (confirmed.confirmed==false) return;
+            else {
+                await deleteAccount()
+                logoutUser()
+                //delPhoto(user.photoURL.split("/").pop())
+                console.log(user);
+                navigate("/")
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error("Valódi hiba történt a fiók törlése közben:", error);
+                setMsg({ type: "error", text: "Valami hiba történt a fiók törlése közben." });
+            } else {
+                // A felhasználó csak a Mégsem-re nyomott — itt szándékosan nem csinálunk semmit
+            }
+        }
+    }
+
+
 
     return (
         <div className='md:flex lg:flex-row lg:items-stretch justify-center w-[100%] p-2 m-auto  gap-2  lg:w-[100%]'>
@@ -144,7 +174,7 @@ export const Profile = () => {
                 />
 
                 <div className='flex bg-BaseGreen items-center justify-center text-center rounded-md'>
-                    <input className='text-black  rounded-md flex mx-auto w-[80%] font-semibold' type="file"  {...register('file')}/>
+                    <input className='text-black  rounded-md flex mx-auto w-[80%] font-semibold' type="file"  {...register('file')} />
                 </div>
                 <button className='mt-2  h-max p-2.5 break-words rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95  transition-all cursor-pointer text-center'>
                     Profilkép módosítása
@@ -194,6 +224,13 @@ export const Profile = () => {
                         disabled={loading}
                         className='mt-2 p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
                         {loading ? 'Mentés...' : 'Mentés'}
+                    </button>
+                    <button
+                        onClick={handleDelete}
+                        type="button"
+                        disabled={loading}
+                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 bg-red-600 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                        Profil törlése
                     </button>
                     {msg && <Toastify {...msg} />}
                 </form>
