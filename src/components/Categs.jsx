@@ -19,6 +19,7 @@ export const Categs = () => {
         }
     };
 
+
     return (
         <div className='mt-0 shadow-[#7C7979] shadow-md h-full p-4 rounded-lg bg-white space-y-3 max-w-[100%] mx-auto'>
             <h1 className='tracking-wide text-xl'>Felkapott márkák!</h1>

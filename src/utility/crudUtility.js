@@ -14,14 +14,6 @@ export const addCar = async (formData) => {
 }
 
 
-//Postadd
-export const addPost=async (formdata)=>{
-  const collectionRef=collection(db,'posts')
-  const newItem={...formdata,timestamp:serverTimestamp()}
-  await addDoc(collectionRef,newItem)
-}
-
-
 //Delete data from databases
 
 
