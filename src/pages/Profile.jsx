@@ -161,8 +161,6 @@ export const Profile = () => {
         }
     }
 
-
-
     return (
         <div className='md:flex lg:flex-row lg:items-stretch justify-center w-[100%] p-2 m-auto  gap-2  lg:w-[100%]'>
             <div className='shadow-[#7C7979] md:h-full items-center md:w-5/12 min-w-[10%] max-w-[100%] flex flex-col   mx-auto shadow-md p-4 rounded-lg bg-white space-y-2 mb-2'>
@@ -196,15 +194,15 @@ export const Profile = () => {
                         {...register('file', {
                             validate: (value) => {
                                 if (!value[0]) return true
-                                //console.log(value);
+                                console.log(value);
                                 const acceptedFormats = ["jpg", "jpeg", "png"]
                                 const fileExtension = value[0].name.split(".").pop().toLowerCase()
-                                if (!acceptedFormats.includes(fileExtension)) return "Invalid file format"
+                                if (!acceptedFormats.includes(fileExtension)) return setMsg({ type: "error", text: "Hibás vagy nem elfogadható fájlformátum!" });
                                 if (value[0].size > 1 * 5000 * 1024) return setMsg({ type: "error", text: "A maximális fájlméret 5MB!" });
                                 return true
                             },
                         })}
-                        onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0])) + console.log(e.target.files[0])}
+                        onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))}
                     />
                 </div>
                 <button

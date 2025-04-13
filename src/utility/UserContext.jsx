@@ -31,11 +31,9 @@ export const UserProvider = ({ children }) => {
 
     const signInUser = async (email, password) => {
         try {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user
+          await signInWithEmailAndPassword(auth, email, password);
           setMsg({}); // Üzenet törlése
           setMsg({ signin: "Sikeres bejelentkezés!" }); // Sikeres bejelentkezés
-          //console.log(user + "\n" + user.uid + "\n");
           
         } catch (error) {
           // Különböző ellenőrzések
