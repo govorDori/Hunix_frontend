@@ -1,18 +1,19 @@
 import React from 'react'
 import { auth } from '../utility/firebaseApp'
-import { createUserWithEmailAndPassword, deleteUser, onAuthStateChanged, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, getAdditionalUserInfo, onAuthStateChanged, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
 import { createContext } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { doc, getFirestore, setDoc } from 'firebase/firestore'
+import { deleteDoc, doc, setDoc } from 'firebase/firestore'
 import { firebaseConfig } from './firebaseConfig'
 import { initializeApp } from 'firebase/app'
+import { dataBase } from './firebaseApp';
 
 
 const app = initializeApp(firebaseConfig);
 
 export const UserContext = createContext();
-export const db = getFirestore(app); //firestore referencia
+export const db = dataBase //firestore referencia
 
 
 const urlRedirect =/*'https://myblog-7535b.web.app/signin' */'http://localhost:5173/auth/in'
@@ -30,9 +31,12 @@ export const UserProvider = ({ children }) => {
 
     const signInUser = async (email, password) => {
         try {
-          await signInWithEmailAndPassword(auth, email, password);
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user
           setMsg({}); // Üzenet törlése
           setMsg({ signin: "Sikeres bejelentkezés!" }); // Sikeres bejelentkezés
+          //console.log(user + "\n" + user.uid + "\n");
+          
         } catch (error) {
           // Különböző ellenőrzések
           if (error.code === 'auth/invalid-credential') {
@@ -64,7 +68,7 @@ export const UserProvider = ({ children }) => {
                 garage: [] // Tömb létrehozása ahova kerül a hirdetés id je majd !
             };
 
-            await setDoc(doc(db, "Users", user.uid), userData);
+            await setDoc(doc(dataBase, "Users", user.uid), userData);
 
             setMsg({ signup: "Sikeres regisztráció!" });
         } catch (error) {
@@ -126,9 +130,9 @@ export const UserProvider = ({ children }) => {
       //Fiók törlése
     const deleteAccount = async () => {
         try {
+            const docRef = doc(dataBase, "Users", auth.currentUser.uid);
+            await deleteDoc(docRef)
             await deleteUser(auth.currentUser)
-            console.log("Törölve");
-
         } catch (error) {
             console.log(error);
 
@@ -146,7 +150,7 @@ export const UserProvider = ({ children }) => {
 
     return (
 
-        <UserContext.Provider value={{db,
+        <UserContext.Provider value={{dataBase,
             user, signInUser, logoutUser, 
             signUpUser, msg, setMsg, resetPassword, updateCredentials, updateUser, deleteAccount
         }}>

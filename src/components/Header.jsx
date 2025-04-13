@@ -4,17 +4,24 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../utility/UserContext';
+import { useEffect } from 'react';
+import { extractUrlAndId } from '../utility/utils';
 
 export const Header = () => {
     const navigate = useNavigate()
     //user lekérdezése, be van e jelentkezve vagy nem?
     const {user,logoutUser}=useContext(UserContext)
-
+    const [avatar, setAvatar] = useState(null)
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+
+    useEffect(() => {
+        user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
+        !user && setAvatar(null)
+    },[user,user?.photoURL]);
 
     return (
         <div>
@@ -44,7 +51,7 @@ export const Header = () => {
                     </div>
                     <div>
                         <img
-                            src="null"
+                            src={user && avatar ? avatar : "NoUser.jpg"}
                             alt=""
                             width={"50px"}
                             className='rounded-full object-cover bg-white w-[50px] h-[50px] shadow-[#7C7979] shadow-md'

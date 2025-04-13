@@ -17,6 +17,7 @@
     "@mui/material": "^7.0.2",
     "@mui/styled-engine-sc": "^7.0.2",
     "@tailwindcss/vite": "^4.0.9",
+    "axios": "^1.8.4",
     "firebase": "^11.6.0",
     "framer-motion": "^12.4.7",
     "material-ui-confirm": "^4.0.0",
