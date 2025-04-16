@@ -12,10 +12,10 @@ export default defineConfig({
 		environment: 'jsdom',
 		setupFiles: './src/tests/setup.js',
 		css: true,
-		reporters: [
-			'default',
-			['json', { outputFile: 'results.json' }]
-		]
+		// reporters: [
+		// 	'default',
+		// 	['json', { outputFile: 'results.json' }]
+		// ]
 
 	}
 })

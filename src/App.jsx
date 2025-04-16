@@ -35,15 +35,6 @@ const router = createBrowserRouter([
     
   }
 ],
-  {
-    future: {
-      v7_relativeSplatPath: true,
-      v7_normalizeFormMethod: true,
-      v7_fetcherPersist: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-    }
-  }
 )
 
 
@@ -62,7 +53,7 @@ function App() {
     >
 <div className='bg-[#EFEFEF] '>
       <div className='max-w-6xl mx-auto'>
-        <RouterProvider router={router} future={{ v7_startTransition: true }} />
+        <RouterProvider router={router} />
       </div>
     </div>
     </motion.div>

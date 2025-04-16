@@ -7,10 +7,12 @@ import { ConfirmProvider } from 'material-ui-confirm'
 
 createRoot(document.getElementById('root')).render(
 
-  <UserProvider>
-      <ConfirmProvider>
-        <App />
-      </ConfirmProvider>
-  </UserProvider>
+	<ConfirmProvider>
+		<UserProvider>
+
+			<App />
+		</UserProvider>
+
+	</ConfirmProvider>
 
 )
