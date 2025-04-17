@@ -75,11 +75,11 @@ export const Allitem = () => {
                         >
                             <div>
                                 <img
-                                    src={ad.photoURL || 'https://via.placeholder.com/130x110'} // Kép URL vagy placeholder
-                                    alt={ad.displayName || 'Hirdetés'}
+                                    src={ad.photoURL || `./HunixTestCar.jpg`} // Kép URL vagy placeholder
+                                    alt=""
                                     className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
                                 />
-                                <p className='text-[#939393]'>{ad.displayName}</p>
+                                <p className='text-[#939393]'>{ad.adName}</p>
                                 <p className='text-[#939393] text-sm'>Ár: {ad.price || 'N/A'}</p>
                             </div>
                         </motion.div>

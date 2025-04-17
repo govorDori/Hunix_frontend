@@ -63,7 +63,8 @@ export const UserProvider = ({ children }) => {
                 phoneNumber: phoneNumber,
                 address: address || '',
                 createdAt: new Date(),
-                garage: [] // Tömb létrehozása ahova kerül a hirdetés id je majd !
+                garage: [], // Tömb létrehozása ahova kerül a hirdetés id je majd !
+                role: 'user' // - alapértelmezett szerepkör
             };
 
             await setDoc(doc(dataBase, "Users", user.uid), userData);
@@ -148,7 +149,7 @@ export const UserProvider = ({ children }) => {
 
     return (
 
-        <UserContext.Provider value={{dataBase,
+        <UserContext.Provider value={{db,
             user, signInUser, logoutUser, 
             signUpUser, msg, setMsg, resetPassword, updateCredentials, updateUser, deleteAccount
         }}>

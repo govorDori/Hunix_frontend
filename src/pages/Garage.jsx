@@ -8,9 +8,9 @@ import { Detail } from '../components/Detail';
 export const Garage = () => {
     const { user } = useContext(UserContext); // A bejelentkezett felhasználó lekérése
     const [garageAds, setGarageAds] = useState([]); // A felhasználó garázsában lévő hirdetések
-    const navigate = useNavigate();
     const [selectedAd, setSelectedAd] = useState(null); // kiválasztott hirdetés
     const [isDetailVisible, setIsDetailVisible] = useState(false); //Detail panel megjelenítése
+    const navigate = useNavigate();
 
     // Ha nincs bejelentkezve visszadobjuk a HOME page-re.
     useEffect(() => {
@@ -26,7 +26,7 @@ export const Garage = () => {
                     // Lekérjük a felhasználó adatokat, hogy megtudjuk, mik a mentett hirdetései
                     const userRef = doc(db, "Users", user.uid);
                     const userSnap = await getDoc(userRef);
-                    console.log(userSnap.id);
+                    
                     
                     if (userSnap.exists()) {
                         const garage = userSnap.data().garage || []; // A 'garage' mezőből szedjük ki a mentett hirdetéseket
@@ -84,7 +84,7 @@ const handleAdSelect = (ad) => {
     setIsDetailVisible(true); // Detail panel megjelenítése
 };
 
-    console.log(garageAds);
+    
 
 
     // Ha a felhasználó nem mentett hirdetést, akkor azt jelezzük
@@ -97,7 +97,7 @@ const handleAdSelect = (ad) => {
         );
     }
 
-    console.log(garageAds);
+    
     
 
     return (

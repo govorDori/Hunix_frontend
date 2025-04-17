@@ -5,10 +5,12 @@ import { deletePost } from '../utility/crudUtility'; // Importáljuk a deletePos
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { IoMdClose } from "react-icons/io";
 
 export const Detail = ({ ad, onClose }) => {
     const { user } = useContext(UserContext); // A bejelentkezett felhasználó lekérése ( törlés érdekében )
     const [advertiser, setAdvertiser] = useState(null);
+    
 
     //UseEffectel lekérjük a hirdetésbe beleírt userID alapján az adatbázisból a hirdető adatait userSnap-el.
     useEffect(() => {
@@ -33,19 +35,19 @@ export const Detail = ({ ad, onClose }) => {
     }, [ad.userId, db]);
 
     //A felhasználó hozzáadhatja az adott hirdetést a garázsához ID alapján
-const addToGarage = async (userId, adId) => {
+    const addToGarage = async (userId, adId) => {
         try {
-          const userRef = doc(db, "Users", userId);  // Felhasználó dokumentum lekérés
-          await updateDoc(userRef, {
-            garage: arrayUnion(adId)  // Hirdetés ID-ját a felhasználó garage mezőjéhez fűzzük
-          });
-          console.log("A hirdetés sikeresen hozzáadva a garázshoz");
+            const userRef = doc(db, "Users", userId);  // Felhasználó dokumentum lekérés
+            await updateDoc(userRef, {
+                garage: arrayUnion(adId)  // Hirdetés ID-ját a felhasználó garage mezőjéhez fűzzük
+            });
+            console.log("A hirdetés sikeresen hozzáadva a garázshoz");
         } catch (error) {
-          console.error("Hiba történt a garázsba rakáskor:", error);
+            console.error("Hiba történt a garázsba rakáskor:", error);
         }
-      };
+    };
 
-      //Kattintásra a garázsba kerül
+    //Kattintásra a garázsba kerül
     const handleAddToGarage = async () => {
         try {
             if (user) { //ellenőrizzük hogy egyáltalán be van e jelentkezve a felhasználó
@@ -72,23 +74,24 @@ const addToGarage = async (userId, adId) => {
 
     return (
         <div className="absolute top-0 left-0 w-full h-screen flex justify-center items-center z-50">
-            <div className="bg-white p-5 shadow-lg shadow-black rounded-lg w-11/12 md:w-1/2 relative">
-                <button 
+            <div className="bg-white p-5 shadow-lg shadow-black rounded-lg w-11/12 md:w-150 relative">
+                <button
                     onClick={onClose}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full"
+                    className="absolute top-6 right-2  text-red-500  flex text-center items-center rounded-full"
                 >
-                    X
+                    <IoMdClose className='size-7' />
+
                 </button>
                 <h2 className="text-2xl font-bold mb-4">{ad.adName}</h2>
-                <img 
-                    src={ad.photoURL || 'https://via.placeholder.com/150'} 
+                <img
+                    src={ad.photoURL || 'https://via.placeholder.com/150'}
                     alt={ad.displayName}
                     className="w-full h-56 object-cover mb-4 rounded-lg"
                 />
                 <p className="text-gray-700 mb-2"><strong>Ár:</strong> {ad.price}</p>
-                <p className="text-gray-700 mb-2"><strong>Leírás:</strong> {ad.description}</p>
+                <p className="text-gray-700 mb-2 break-words whitespace-break-spaces"><strong>Leírás:</strong> {ad.description}</p>
                 <p className="text-gray-700 mb-2"><strong>Márka:</strong> {ad.brand}</p>
-                
+
                 {advertiser && (
                     <div className="mt-4">
                         <h3 className="text-lg font-semibold">Hirdető adatai:</h3>
@@ -98,29 +101,34 @@ const addToGarage = async (userId, adId) => {
                     </div>
                 )}
 
-                {/* Csak akkor jelenik meg a törlés gomb, ha a hirdető userID je megegyezik a Bejelentkezett userID-vel */}
-                {user && ad.userId === user.uid && (
-                    <div className="mt-4">
-                        <button 
-                            onClick={handleDelete}
-                            className="w-full bg-red-600 text-white p-2 rounded-md"
-                        >
-                            Hirdetés törlése
-                        </button>
-                    </div>
+                {!advertiser && (
+                    <div>A hirdető adatai nem találhatóak!</div>
                 )}
 
-                {user &&
-                <div>
-                     {/* Hozzáadjak a garázshoz */}
-                     <button 
-                            onClick={handleAddToGarage}
-                            className="w-full bg-blue-600 text-white p-2 rounded-md mt-2"
-                        >
-                            Hirdetés garázsba helyezése!
-                        </button>
-                </div>
-                }
+                <div className='grid items-center w-full justify-center sm:grid-cols-2 gap-2'>
+                    {/* Csak akkor jelenik meg a törlés gomb, ha a hirdető userID je megegyezik a Bejelentkezett userID-vel */}
+                    {user && ad.userId === user.uid && (
+                       
+                            <button
+                                onClick={handleDelete}
+                                className="w-50 mx-auto text-sm bg-red-600 text-white p-2 rounded-md"
+                            >
+                                Hirdetés törlése
+                            </button>
+                        
+                    )}
+
+                    {user &&
+                        <div>
+                            {/* Hozzáadjak a garázshoz */}
+                            <button
+                                onClick={handleAddToGarage}
+                                className="w-50 text-sm mx-auto bg-blue-600 text-white p-2 rounded-md"
+                            >
+                                Hirdetés garázsba helyezése!
+                            </button>
+                        </div>
+                    }</div>
             </div>
         </div>
     );

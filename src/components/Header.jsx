@@ -3,16 +3,18 @@ import { Outlet } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { UserContext } from '../utility/UserContext';
+import { db, UserContext } from '../utility/UserContext';
 import { useEffect } from 'react';
 import { extractUrlAndId } from '../utility/utils';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const Header = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     //user lekérdezése, be van e jelentkezve vagy nem?
     const {user,logoutUser}=useContext(UserContext)
     const [avatar, setAvatar] = useState(null)
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -22,6 +24,30 @@ export const Header = () => {
         user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
         !user && setAvatar(null)
     },[user,user?.photoURL]);
+    
+
+    //Admin e vagy sem
+    useEffect(() => {
+        const checkRole = async () => {
+          if (!user) return;
+    
+          const docRef = doc(db, 'Users', user.uid);
+          const docSnap = await getDoc(docRef);
+    
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setIsAdmin(data.role === 'admin');
+          }
+        };
+    
+        checkRole();
+      }, [user]);
+    console.log("Admin vagy-e: "+isAdmin); //teszt miatt
+    
+  
+    
+
+    
 
     return (
         <div>
@@ -44,6 +70,9 @@ export const Header = () => {
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/garage')}>Garázs</button>
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/postcreate')}>Új hirdetés</button>
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => logoutUser()}>Kijelentkezés</button>
+                        {isAdmin && (
+                            <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/admin')}>Admin Panel</button>
+                        )}
                         </>
                     )}
                         
@@ -85,6 +114,9 @@ export const Header = () => {
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/garage')}>Garázs</button>
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/postcreate')}>Új hirdetés</button>
                         <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => logoutUser()}>Kijelentkezés</button>
+                        {isAdmin && (
+                            <button className=' h-max p-1 cursor-pointer text-[#9E9E9E]' onClick={() => navigate('/admin')}>Admin Panel</button>
+                        )}
                         </>
                     )}
                     <div>

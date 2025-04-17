@@ -1,11 +1,15 @@
 
 import { motion } from 'framer-motion';
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { GoTriangleLeft } from "react-icons/go";
 import { GoTriangleRight } from "react-icons/go";
+import { BrandContext } from '../utility/BrandContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Categs = () => {
     const scrollContainerRef = useRef(null);
+    const { brands } = useContext(BrandContext); //Márkák lekérése
+    const navigate = useNavigate();
 
     const scrollLeft = () => {
         if (scrollContainerRef.current) {
@@ -42,8 +46,8 @@ export const Categs = () => {
                 // scrollbar-hide: elrejti a görgetősávot
                 >
                     {/* Egy map ami teszteli sok kategória esetén mi történik(később hasznos lesz) ide jöhetnek kocsi márkák és képei akár*/}
-                    {[...Array(10)].map((e, index) => (
-                        <motion.dev key={index}
+                    {brands && brands.map((brand, index) => (
+                        <motion.dev onClick={() => navigate('/allads')} key={brand.id}
                         className='flex-shrink-0 text-center justify-center items-center flex-col flex'
                         initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
                         animate={{ opacity: 1, scale: 1 , rotate: 0}}
@@ -56,11 +60,11 @@ export const Categs = () => {
                         >
                         <div>
                             <img
-                                src="./HunixTestCar.jpg"
+                                src={ brand.imageUrl ||"./HunixTestCar.jpg"}
                                 alt=""
-                                className='object-cover w-[100px] h-[100px] rounded-full'
+                                className='object-cover w-[100px] h-[100px] rounded-full border border-gray-400'
                             />
-                            <p className='text-[#939393]'>Márka{index}</p>
+                            <p className='text-[#939393]'>{brand.name}</p>
                         </div>
                         </motion.dev>
                        

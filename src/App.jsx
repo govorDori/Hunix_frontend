@@ -13,6 +13,7 @@ import { AddEditPost } from './pages/AddEditPost';
 import { PwReset } from './pages/PwReset';
 import Schema from './components/Schema';
 import { AllAds } from './pages/AllAds';
+import { Admin } from './pages/Admin';
 
 
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       {path:'/update/:id',element:<AddEditPost/>},
       { path: '/pwreset', element: <PwReset /> },
       { path: '/allads', element: <AllAds /> },
+      { path: '/admin', element: <Admin /> },
 	  { path: '/schema', element: <Schema /> },
     ]
     

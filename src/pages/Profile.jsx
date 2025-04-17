@@ -113,11 +113,11 @@ export const Profile = () => {
             });
 
             // Auth profil frissítés (eltérő a kollekciostól de profilnál hasznos lesz!! by: nndr)
-            
+
             await updateUser(data.displayName, file ? url + "/" + id : null);
 
             console.log();
-            
+
 
         } catch (error) {
             console.error("Profil frissítés hiba:", error);
@@ -148,7 +148,7 @@ export const Profile = () => {
             else {
                 await deleteAccount()
                 logoutUser()
-                if(user.photoURL != null) delPhoto(user.photoURL.split("/").pop())
+                if (user.photoURL != null) delPhoto(user.photoURL.split("/").pop())
                 navigate("/")
             }
         } catch (error) {
@@ -165,52 +165,51 @@ export const Profile = () => {
         <div className='md:flex lg:flex-row lg:items-stretch justify-center w-[100%] p-2 m-auto  gap-2  lg:w-[100%]'>
             <div className='shadow-[#7C7979] md:h-full items-center md:w-5/12 min-w-[10%] max-w-[100%] flex flex-col   mx-auto shadow-md p-4 rounded-lg bg-white space-y-2 mb-2'>
                 <h1 className='tracking-wide text-xl'>Profil</h1>
-                <form onSubmit={handleSubmit(onSubmit)}>
-
-                
-                <div>
-                    {avatar &&
-                        <img
-                            src={user && avatar ? avatar : "NoUser.jpg"}
-                            alt="avatar img"
-                            width={"50px"}
-                            className='rounded-full object-cover bg-white w-[50px] h-[50px] shadow shadow-gray-400/50'
-                        />
-                    }
-                </div>
-                <p>Jelenlegi felhasználónév:</p>
-                <input
-                    {...register('displayName')}
-                    defaultValue={user?.displayName || ''}
-                    className='text-[#939393] mt-[-10px] text-center'
-                    placeholder="Felhasználónév"
-                    disabled
-                />
-
-                <div className='flex bg-BaseGreen items-center justify-center text-center rounded-md'>
+                <form onSubmit={handleSubmit(onSubmit)} className='text-center flex flex-col justify-center'>
+                    
+                    <div>
+                        {avatar &&
+                            <img
+                                src={user && avatar ? avatar : "NoUser.jpg"}
+                                alt="avatar img"
+                                width={"50px"}
+                                className='rounded-full object-cover mx-auto bg-white w-[50px] h-[50px] shadow shadow-gray-400/50'
+                            />
+                        }
+                    </div>
+                    <p>Jelenlegi felhasználónév:</p>
                     <input
-                        className='text-black  rounded-md flex mx-auto w-[80%] font-semibold'
-                        type="file"
-                        {...register('file', {
-                            validate: (value) => {
-                                if (!value[0]) return true
-                                console.log(value);
-                                const acceptedFormats = ["jpg", "jpeg", "png"]
-                                const fileExtension = value[0].name.split(".").pop().toLowerCase()
-                                if (!acceptedFormats.includes(fileExtension)) return setMsg({ type: "error", text: "Hibás vagy nem elfogadható fájlformátum!" });
-                                if (value[0].size > 1 * 5000 * 1024) return setMsg({ type: "error", text: "A maximális fájlméret 5MB!" });
-                                return true
-                            },
-                        })}
-                        onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))}
+                        {...register('displayName')}
+                        defaultValue={user?.displayName || ''}
+                        className='text-[#939393] mt-[-10px] text-center'
+                        placeholder="Felhasználónév"
+                        disabled
                     />
-                </div>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className='mt-2 p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                    {loading ? 'Mentés...' : 'Mentés'}
-                </button>
+
+                    <div className='flex bg-BaseGreen items-center justify-center text-center rounded-md'>
+                        <input
+                            className='text-black  rounded-md flex mx-auto w-[80%] font-semibold'
+                            type="file"
+                            {...register('file', {
+                                validate: (value) => {
+                                    if (!value[0]) return true
+                                    console.log(value);
+                                    const acceptedFormats = ["jpg", "jpeg", "png"]
+                                    const fileExtension = value[0].name.split(".").pop().toLowerCase()
+                                    if (!acceptedFormats.includes(fileExtension)) return setMsg({ type: "error", text: "Hibás vagy nem elfogadható fájlformátum!" });
+                                    if (value[0].size > 1 * 5000 * 1024) return setMsg({ type: "error", text: "A maximális fájlméret 5MB!" });
+                                    return true
+                                },
+                            })}
+                            onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 w-max mx-auto bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                        {loading ? 'Mentés...' : 'Mentés'}
+                    </button>
                 </form>
 
                 {/* További beállítások menü */}
@@ -252,10 +251,17 @@ export const Profile = () => {
                     </div>
 
                     <button
+                        type="submit"
+                        disabled={loading}
+                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 w-max mx-auto bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                        {loading ? 'Mentés...' : 'Mentés'}
+                    </button>
+
+                    <button
                         onClick={handleDelete}
                         type="button"
                         disabled={loading}
-                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 bg-red-600 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                        className='mt-2 p-2.5 text-white rounded-sm pl-6 pr-6 bg-red-600 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
                         Profil törlése
                     </button>
                     {msg && <Toastify {...msg} />}
@@ -267,7 +273,7 @@ export const Profile = () => {
                 <h1 className='tracking-wide text-xl'>Hirdetéseid</h1>
                 <p className='text-[#939393] mt-[-10px]'>Az összes hirdetésed</p>
 
-                <div className='gap-1 sm:grid grid-cols-2'>
+                <div className='gap-1 sm:grid grid-cols-1'>
 
                     {/* A felhasználó által hirdetett hirdetések megjelenítése ! */}
                     {user && <UserAds userId={user.uid} onAdSelect={handleAdSelect} />}

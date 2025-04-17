@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { getAds } from "../utility/crudUtility";
 import { motion } from "framer-motion";
 import { Detail } from "../components/Detail";
+import { BrandContext } from "../utility/BrandContext";
 
 export const AllAds = () => {
     const [ads, setAds] = useState([]); // Hirdetéseket tároló állapot
     const [selectedAd, setSelectedAd] = useState(null); // Kiválasztott hirdetés
+    const { brands } = useContext(BrandContext); //Márkák lekérése
+    
 
     // Hirdetések betöltése
     useEffect(() => {
@@ -30,20 +33,14 @@ export const AllAds = () => {
             <div className="shadow-[#7C7979] shadow-sm  w-full sm:w-90 p-2 rounded-md text-center font-bold text-lg mx-auto">
                 <h1>Márka alapú szűrés</h1>
 
-                <div className="flex items-center gap-1">
-                    <input className=" size-5" type="checkbox" name="" id="" />
-                    <h2>Audi</h2>
-                </div>
+            
 
-                <div className="flex items-center gap-1">
-                    <input className=" size-5" type="checkbox" name="" id="" />
-                    <h2>BMW</h2>
-                </div>
-
-                <div className="flex items-center gap-1">
-                    <input className=" size-5" type="checkbox" name="" id="" />
-                    <h2>Tesla</h2>
-                </div>
+                {brands && brands.map((brand,index) => (
+                    <div className="flex items-center gap-1" key={index}>
+                            <input className=" size-5" type="checkbox" name="" id="" />
+                            <h2>{brand.name}</h2>
+                    </div>
+                ))}
 
 
             </div>
@@ -52,7 +49,7 @@ export const AllAds = () => {
             {ads.map((ad) => (
                         <motion.div 
                             key={ad.id} 
-                            className='w-full  flex-row gap-2 flex p-2 bg-white shadow-[#7C7979] shadow-md text-left rounded-md'
+                            className='w-full mb-2 flex-row gap-2 flex p-2 bg-white shadow-[#7C7979] shadow-md text-left rounded-md'
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{
@@ -68,12 +65,14 @@ export const AllAds = () => {
                                     alt={ad.displayName || 'Fotó'}
                                     className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
                                 />
-                                <p className='text-[#939393]'>{ad.displayName}</p>
+                                <p className='text-[#939393]'>{ad.adName}</p>
                                 <p className='text-[#939393] text-sm'>Ár: {ad.price || 'N/A'}</p>
                             </div>
                             <div>
                                 <h1 className="font-bold">{ad.adName}</h1>
                                 <p>Leírás: {ad.description}</p>
+                                <p>Márka: {ad.brand}</p>
+                                <p>Lóerő: {ad.horsePower}</p>
                             </div>
                             
                         </motion.div>

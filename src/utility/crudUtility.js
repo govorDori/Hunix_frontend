@@ -27,7 +27,7 @@ export const deleteCar = async (id) => {
 
 //Read data from databases
 
-
+//Összes Brand beolvasás
 export const readAllBrands = (setBrands) => {
   const collectionRef = collection(dataBase, "Brands")
   const quer = query(collectionRef, orderBy("name", "asc"))
