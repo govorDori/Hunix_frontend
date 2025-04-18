@@ -6,11 +6,14 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { IoMdClose } from "react-icons/io";
+import { FaCarAlt } from 'react-icons/fa';
+import { PiEngineFill } from "react-icons/pi";
+import { IoPersonCircle } from "react-icons/io5";
 
 export const Detail = ({ ad, onClose }) => {
     const { user } = useContext(UserContext); // A bejelentkezett felhasználó lekérése ( törlés érdekében )
     const [advertiser, setAdvertiser] = useState(null);
-    
+
 
     //UseEffectel lekérjük a hirdetésbe beleírt userID alapján az adatbázisból a hirdető adatait userSnap-el.
     useEffect(() => {
@@ -74,7 +77,7 @@ export const Detail = ({ ad, onClose }) => {
 
     return (
         <div className="absolute top-0 left-0 w-full h-screen flex justify-center items-center z-50">
-            <div className="bg-white p-5 shadow-lg shadow-black rounded-lg w-11/12 md:w-150 relative">
+            <div className="bg-white p-5 shadow-lg shadow-black/40 rounded-lg w-11/12 md:w-150 relative">
                 <button
                     onClick={onClose}
                     className="absolute top-6 right-2  text-red-500  flex text-center items-center rounded-full"
@@ -82,19 +85,33 @@ export const Detail = ({ ad, onClose }) => {
                     <IoMdClose className='size-7' />
 
                 </button>
-                <h2 className="text-2xl font-bold mb-4">{ad.adName}</h2>
+                <h2 className="text-2xl font-bold mb-4">Hirdetés neve: {ad.adName}</h2>
                 <img
                     src={ad.photoURL || 'https://via.placeholder.com/150'}
                     alt={ad.displayName}
                     className="w-full h-56 object-cover mb-4 rounded-lg"
                 />
-                <p className="text-gray-700 mb-2"><strong>Ár:</strong> {ad.price}</p>
-                <p className="text-gray-700 mb-2 break-words whitespace-break-spaces"><strong>Leírás:</strong> {ad.description}</p>
-                <p className="text-gray-700 mb-2"><strong>Márka:</strong> {ad.brand}</p>
+                <div className='flex flex-wrap gap-2'>
+                    <div>
+                        <p className="text-gray-700 mb-2 text-xl"><strong>Ár:</strong> <span className='text-green-700 text-2xl font-bold'>{ad.price}</span> </p>
+                        <p className="text-gray-700 mb-2 break-words whitespace-break-spaces"><strong>Leírás:</strong> {ad.description}</p>
+                        <h1 className='italic text-green-700 font-bold text-xl flex items-center gap-2'><FaCarAlt className='size-5' /> Autó adatai</h1>
+                        <p className="text-gray-700 mb-2"><strong>Márka:</strong> {ad.brand}</p>
+                        <p className="text-gray-700 mb-2"><strong>Modell:</strong> {ad.model}</p>
+                    </div>
+                    <div>
+                        <h1 className='italic text-green-700 font-bold text-xl flex items-center gap-2'><PiEngineFill className='size-5' /> Motor adatai</h1>
+                        <p className="text-gray-700 mb-2"><strong>Hengerűrtartalom:</strong> {ad.engineSize} <span className=' font-semibold italic'>cm³</span></p>
+                        <p className="text-gray-700 mb-2 "><strong>Teljesítmény:</strong> {ad.horsePower} <span className=' font-semibold italic'>LE</span></p>
+                        <p className="text-gray-700 mb-1"><strong>Kihasználtság:</strong> <span className='italic'>{ad.usage}</span></p>
+                    </div>
+                </div>
+
+                <hr className='w-full mt-1 mb-1 text-green-700/30' />
 
                 {advertiser && (
-                    <div className="mt-4">
-                        <h3 className="text-lg font-semibold">Hirdető adatai:</h3>
+                    <div className="mt-1 ">
+                        <h3 className=" font-bold italic text-xl flex items-center text-green-700 gap-1"><IoPersonCircle className='size-5' />Hirdető adatai:</h3>
                         <p className="text-gray-700"><strong>Név:</strong> {advertiser.displayName}</p>
                         <p className="text-gray-700"><strong>Email:</strong> {advertiser.email}</p>
                         <p className="text-gray-700"><strong>Telefonszám:</strong> {advertiser.phoneNumber}</p>
@@ -105,17 +122,19 @@ export const Detail = ({ ad, onClose }) => {
                     <div>A hirdető adatai nem találhatóak!</div>
                 )}
 
-                <div className='grid items-center w-full justify-center sm:grid-cols-2 gap-2'>
+                <hr className='w-full mt-1 mb-1 text-green-700/30' />
+
+                <div className='grid items-center w-full justify-center sm:grid-cols-2 gap-2 mt-2'>
                     {/* Csak akkor jelenik meg a törlés gomb, ha a hirdető userID je megegyezik a Bejelentkezett userID-vel */}
                     {user && ad.userId === user.uid && (
-                       
-                            <button
-                                onClick={handleDelete}
-                                className="w-50 mx-auto text-sm bg-red-600 text-white p-2 rounded-md"
-                            >
-                                Hirdetés törlése
-                            </button>
-                        
+
+                        <button
+                            onClick={handleDelete}
+                            className="w-60 text-sm mx-auto bg-red-500 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
+                        >
+                            Hirdetés törlése
+                        </button>
+
                     )}
 
                     {user &&
@@ -123,7 +142,7 @@ export const Detail = ({ ad, onClose }) => {
                             {/* Hozzáadjak a garázshoz */}
                             <button
                                 onClick={handleAddToGarage}
-                                className="w-50 text-sm mx-auto bg-blue-600 text-white p-2 rounded-md"
+                                className="w-max text-sm mx-auto bg-green-700 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
                             >
                                 Hirdetés garázsba helyezése!
                             </button>
