@@ -23,7 +23,7 @@ export const Home = () => {
 
 
             {/* Kereső mező / kereséshez szükséges gombok */}
-            <div className='flex p-3 items-center rounded-lg shadow-[#7C7979] shadow-md pl-4 pr-4 gap-3 w-full bg-white flex-wrap'>
+            <div className='flex p-3 items-center rounded-lg shadow-[#7c7979]/20 shadow-md pl-4 pr-4 gap-3 w-full bg-white flex-wrap'>
                 <div className='flex-1 min-w-[200px] '>
                     <input
                         type="text"
@@ -60,8 +60,8 @@ export const Home = () => {
             {/* Kategória / hirdetés tároló */}
             <div className='mt-3  flex justify-center flex-wrap md:flex  lg:items-center lg:justify-center rounded-lg  gap-2 '>
                 {/* Bal oszlop*/}
-                <div className='md:flex lg:flex-col  lg:items-stretch items-center justify-center w-full   gap-2  lg:w-[50%] min-w-[10%]'>
-                    <div className='shadow-[#7C7979] md:h-full md:w-full min-w-[10%] max-w-[100%]  mx-auto shadow-md p-4 rounded-lg bg-white space-y-2'>
+                <div className='md:flex lg:flex-col  lg:items-stretch items-center justify-center w-full gap-2  lg:w-[50%] min-w-[10%]'>
+                    <div className='shadow-[#7C7979]/20 md:h-full md:w-full min-w-[10%] max-w-[100%]  mx-auto shadow-md p-4 rounded-lg bg-white space-y-2'>
                         <h1 className='tracking-wide text-xl'>Böngéssz hirdetéseink közt!</h1>
                         <p className='text-[#939393] mt-[-10px]'>Találd meg a számodra járművet.</p>
                         <button
@@ -78,7 +78,7 @@ export const Home = () => {
                 </div>
 
                 {/* Jobb oszlop (kép) */}
-                <div className='lg:flex flex-col w-full hidden md:w-[49%] min-w-[10%]'>
+                <div className='lg:flex shadow-[#7C7979]/20 shadow-md flex-col w-full hidden md:w-[49%] min-w-[10%]'>
                     <img
                         src="HunixTestCar.jpg"
                         alt=""
@@ -87,6 +87,7 @@ export const Home = () => {
                 </div>
             </div>
 
+            {/* Összes hirdetés komponens */}
             <div className='mt-3 flex'>
                 <Allitem />
             </div>

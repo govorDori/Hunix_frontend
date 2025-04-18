@@ -6,9 +6,7 @@ body {
 }
 
 @theme{
-  --color-BaseGreen: #00FF1E;
-  
-  
+  --color-BaseGreen: var(--color-green-400);
 }
 
 

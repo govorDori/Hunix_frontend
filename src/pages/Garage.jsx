@@ -26,8 +26,8 @@ export const Garage = () => {
                     // Lekérjük a felhasználó adatokat, hogy megtudjuk, mik a mentett hirdetései
                     const userRef = doc(db, "Users", user.uid);
                     const userSnap = await getDoc(userRef);
-                    
-                    
+
+
                     if (userSnap.exists()) {
                         const garage = userSnap.data().garage || []; // A 'garage' mezőből szedjük ki a mentett hirdetéseket
 
@@ -37,11 +37,11 @@ export const Garage = () => {
                                 collection(db, "Ads"),
                                 where("__name__", "in", garage) // Azonosító alapján kéri le a hirdetéseket
                             );
-                            
-                        
+
+
                             const querySnapshot = await getDocs(adsQuery);
-                            
-                            const ads = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}) ); //adatok kinyerése doc.id hozzafűzése az ads hoz, törlés miatt
+
+                            const ads = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })); //adatok kinyerése doc.id hozzafűzése az ads hoz, törlés miatt
 
                             setGarageAds(ads); // Seteljük a hirdetéseket
 
@@ -63,7 +63,7 @@ export const Garage = () => {
             await updateDoc(userRef, {
                 garage: arrayRemove(adId) // Eltávolítjuk az adId-t a garage tömbből a firestore-ban
             });
-            
+
             // Ha sikerült
             alert('A hirdetés törölve lett a garázsból!');
             navigate('/')
@@ -78,58 +78,56 @@ export const Garage = () => {
         deleteFromGarage(adId); // Meghívjuk a törlés funkciót (nem müködik még mivel az adId nincs lekérve!)
     };
 
-//Kiválasztott hirdetés kártyájának megjelentíése
-const handleAdSelect = (ad) => {
-    setSelectedAd(ad); // Kiválasztott hirdetés beállítása
-    setIsDetailVisible(true); // Detail panel megjelenítése
-};
+    //Kiválasztott hirdetés kártyájának megjelentíése
+    const handleAdSelect = (ad) => {
+        setSelectedAd(ad); // Kiválasztott hirdetés beállítása
+        setIsDetailVisible(true); // Detail panel megjelenítése
+    };
 
-    
+
 
 
     // Ha a felhasználó nem mentett hirdetést, akkor azt jelezzük
     if (!garageAds.length) {
         return (
-            <div className="shadow-[#7C7979] md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto shadow-md p-4 rounded-lg bg-white space-y-2">
+            <div className="shadow-[#7C7979]/20 md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto shadow-md p-4 rounded-lg bg-white space-y-2">
                 <h1 className="tracking-wide text-xl">Garázsod</h1>
                 <p className="text-[#939393] mt-[-10px]">Nincsenek mentett hirdetéseid</p>
             </div>
         );
     }
 
-    
-    
-
     return (
-        <div className="shadow-[#7C7979] md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto shadow-md p-4 rounded-lg bg-white space-y-2">
+        <div className="shadow-[#7C7979]/20 md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto shadow-md p-4 rounded-lg bg-white space-y-2">
             <div className="md:h-full md:w-full min-w-[10%] max-w-[100%] mx-auto rounded-lg bg-white space-y-2">
                 <h1 className="tracking-wide text-xl">Garázsod</h1>
                 <p className="text-[#939393] mt-[-10px]">Általad mentett hirdetések</p>
 
                 <div className="gap-1 sm:grid grid-cols-3">
                     {garageAds.map((ad, index) => (
-                        <div key={index} className="border rounded-md border-gray-300 w-full p-2">
+                        <div key={index} className="border rounded-md border-gray-300 w-full p-2 relative">
                             <h1 className="text-2xl font-bold">Auto neve: <span className="text-green-400">{ad.adName}</span></h1>
                             <img
                                 src={ad.photoURL || "https://via.placeholder.com/150"}
-                                className="rounded-xl object-cover mt-2 mb-2 shadow-md shadow-black/30"
+                                className="rounded-xl object-cover mt-2 mb-2 shadow-md shadow-[#7C7979]/20"
                                 alt="Foto helye"
                             />
-                            <p className="text-gray-400 break-words">{ad.description}</p>
+                            <p className=" break-words">Leírás: <span className='text-gray-400'>{ad.description}</span></p>
                             <h2>Lóerő: {ad.horsePower}</h2>
                             <h2>Ár: {ad.price} Ft</h2>
 
                             <button
-                            onClick={() => handleAdSelect(ad)}
-                            className="mt-2 w-full h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center">
+                                onClick={() => handleAdSelect(ad)}
+                                className="mt-2 w-full h-max p-2.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center">
                                 Megtekintés
                             </button>
 
                             <button
-                            onClick={() => handleDelete(ad.id)}
-                            className="mt-2 w-full h-max p-2.5 rounded-sm pl-6 pr-6 bg-red-500 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center">
+                                onClick={() => handleDelete(ad.id)}
+                                className="mt-2 w-full h-max p-2.5 rounded-sm pl-6 pr-6 bg-red-500 font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center">
                                 Törlés
                             </button>
+
                         </div>
                     ))}
                 </div>

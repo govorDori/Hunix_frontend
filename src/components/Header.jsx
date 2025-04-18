@@ -56,7 +56,7 @@ export const Header = () => {
 
                 {/* MID-méretig normál képernyőn*/}
                 <div className='gap-3 p-1 items-center flex-wrap justify-center md:flex hidden transition-all ease-in-out'>
-                    <div className='gap-5 flex bg-white h-max p-0.5 pl-4 pr-4 items-center justify-center rounded-lg shadow-[#7C7979] shadow-md'>
+                    <div className='gap-5 flex bg-white h-max p-0.5 pl-4 pr-4 items-center justify-center rounded-lg shadow-[#7C7979]/20 shadow-md'>
                         { !user ? (
                             <>
                         <button className='text-[#9E9E9E] h-max p-1 cursor-pointer' onClick={() => navigate('/auth/in')}>Bejelentkezés</button>
@@ -83,7 +83,7 @@ export const Header = () => {
                             src={user && avatar ? avatar : "NoUser.jpg"}
                             alt=""
                             width={"50px"}
-                            className='rounded-full object-cover bg-white w-[50px] h-[50px] shadow-[#7C7979] shadow-md'
+                            className='rounded-full object-cover border border-gray-300 bg-white w-[50px] h-[50px] shadow-[#7C7979]/20 shadow-md'
                         />
                     </div>
                 </div>
@@ -98,7 +98,7 @@ export const Header = () => {
             </div>
 
             {/* Reszponzív menü */}
-            <div className={`${isMenuOpen ? 'block' : 'hidden'}  md:hidden fixed right-0 z-1 mt-1 mr-1 bg-white w-max rounded-lg transition-all duration-300 ease-in-out shadow-gray-400/50 shadow-lg`}>
+            <div className={`${isMenuOpen ? 'block' : 'hidden'}  md:hidden fixed right-0 z-1 mt-1 mr-1 bg-white w-max rounded-lg transition-all duration-300 ease-in-out shadow-[#7C7979]/20 shadow-md`}>
 
                 <div className='flex flex-col items-center gap-3 p-4'>
                 { !user ? (
@@ -124,7 +124,7 @@ export const Header = () => {
                             src="null"
                             alt=""
                             width={"50px"}
-                            className='rounded-full object-cover bg-white w-[50px] h-[50px] shadow shadow-gray-400/50'
+                            className='rounded-full object-cover border border-gray-300 bg-white w-[50px] h-[50px] shadow-[#7C7979]/20 shadow-md'
                         />
                     </div>
                 </div>

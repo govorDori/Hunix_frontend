@@ -92,11 +92,11 @@ export const Auth = () => {
           required
         />
 
-        <button type='submit' className='cursor-pointer active:scale-95 transition-all p-2 bg-BaseGreen rounded-md mt-4 mx-auto text-center w-full max-w-[200px]'>
+        <button type='submit' className='cursor-pointer active:scale-95 font-semibold tracking-wider transition-all p-2 bg-BaseGreen rounded-md mt-4 mx-auto text-center w-full max-w-[200px]'>
           {isSignIn ? 'Bejelentkezés' : 'Regisztráció'}
         </button>
         {isSignIn ? 
-        <button type='button' onClick={()=>navigate('/pwreset')} className='cursor-pointer active:scale-95 transition-all p-2 bg-BaseGreen rounded-md mt-4 mx-auto text-center w-full max-w-[200px]'>
+        <button type='button' onClick={()=>navigate('/pwreset')} className='font-semibold tracking-wider cursor-pointer active:scale-95 transition-all p-2 bg-BaseGreen rounded-md mt-4 mx-auto text-center w-full max-w-[200px]'>
           Elfelejtett jelszó
         </button> : <></>}
       </div>

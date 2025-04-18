@@ -40,7 +40,7 @@ export const Allitem = () => {
     };
 
     return (
-        <div className='mt-0 shadow-[#7C7979] shadow-md h-full p-4 rounded-lg bg-white space-y-3 max-w-[100%] mx-auto'>
+        <div className='mt-0 shadow-[#7C7979]/20 shadow-md h-full p-4 rounded-lg bg-white space-y-3 max-w-[100%] mx-auto'>
             <h1 className='tracking-wide text-xl'>Hírdetések</h1>
             <p className='text-[#939393] mt-[-10px]'>Eladók által meghirdetett termékek.</p>
 
@@ -63,7 +63,7 @@ export const Allitem = () => {
                     {ads.map((ad) => (
                         <motion.div 
                             key={ad.id} 
-                            className='flex-shrink-0 justify-center flex-col flex p-2 bg-white shadow-[#7C7979] shadow-md text-left rounded-md'
+                            className='flex-shrink-0 justify-center flex-col flex p-2 bg-white shadow-[#7C7979]/20 shadow-md text-left rounded-md'
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{

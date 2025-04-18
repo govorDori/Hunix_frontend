@@ -80,18 +80,18 @@ export const Detail = ({ ad, onClose }) => {
             <div className="bg-white p-5 shadow-lg shadow-black/40 rounded-lg w-11/12 md:w-150 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-2  text-red-500  flex text-center items-center rounded-full"
+                    className="absolute top-6 right-2 cursor-pointer text-red-500  flex text-center items-center rounded-full"
                 >
                     <IoMdClose className='size-7' />
 
                 </button>
-                <h2 className="text-2xl font-bold mb-4">Hirdetés neve: {ad.adName}</h2>
+                <h2 className="text-2xl font-bold mb-4 break-words">Hirdetés neve: {ad.adName}</h2>
                 <img
                     src={ad.photoURL || 'https://via.placeholder.com/150'}
                     alt={ad.displayName}
                     className="w-full h-56 object-cover mb-4 rounded-lg"
                 />
-                <div className='flex flex-wrap gap-2'>
+                <div className='flex flex-wrap gap-x-10 justify-between p-2'>
                     <div>
                         <p className="text-gray-700 mb-2 text-xl"><strong>Ár:</strong> <span className='text-green-700 text-2xl font-bold'>{ad.price}</span> </p>
                         <p className="text-gray-700 mb-2 break-words whitespace-break-spaces"><strong>Leírás:</strong> {ad.description}</p>
@@ -130,7 +130,7 @@ export const Detail = ({ ad, onClose }) => {
 
                         <button
                             onClick={handleDelete}
-                            className="w-60 text-sm mx-auto bg-red-500 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
+                            className="w-full sm:w-60 text-sm mx-auto bg-red-500 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
                         >
                             Hirdetés törlése
                         </button>
@@ -142,7 +142,7 @@ export const Detail = ({ ad, onClose }) => {
                             {/* Hozzáadjak a garázshoz */}
                             <button
                                 onClick={handleAddToGarage}
-                                className="w-max text-sm mx-auto bg-green-700 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
+                                className="w-full sm:w-max text-sm mx-auto bg-green-700 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
                             >
                                 Hirdetés garázsba helyezése!
                             </button>

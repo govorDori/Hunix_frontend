@@ -13,7 +13,7 @@ export const Footer = () => {
       ease: [0, 0.71, 0.2, 1.01],
   }}
         
-        className='text-center w-full shadow-[#7C7979] shadow-md h-full p-4 rounded-lg bg-white space-y-3 max-w-[100%] mx-auto'>
+        className='text-center w-full shadow-[#7C7979]/20 shadow-md h-full p-4 rounded-lg bg-white space-y-3 max-w-[100%] mx-auto'>
             <h1 className='text-2xl'>Elérhetőségek</h1>
 
             {/* Teszt képpen duplikált kártyák */}
