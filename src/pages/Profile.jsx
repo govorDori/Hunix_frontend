@@ -102,6 +102,9 @@ export const Profile = () => {
         try {
             // Ha van fájl, töltsük fel (pl. profilkép) később hasznos lesz by:nndr
             const file = data?.file ? data?.file[0] : null;
+            if(avatar && file){
+                await delPhoto("hunix/"+user.photoURL.split("/")[8].split(".")[0])
+            } 
             const { url, id } = file ? await uploadFile(file) : {};
 
             // Frissítés Firestore-ban
@@ -134,21 +137,24 @@ export const Profile = () => {
         setIsDetailVisible(true); // Detail panel megjelenítése
     };
 
+    
+    
 
     const handleDelete = async () => {
         try {
+            /*console.log(user.photoURL.split("/")[8]);
+            console.log("hunix/"+user.photoURL.split("/")[8].split(".")[0]);*/
             const confirmed = await confirm({
                 description: "Ez a művelet nem vonható vissza!",
                 confirmationText: "Igen",
                 cancellationText: "Mégsem",
                 title: "Biztos ki szeretnéd törölni a fiókod?"
             })
-
             if (confirmed.confirmed == false) return;
             else {
                 await deleteAccount()
+                await delPhoto("hunix/"+user.photoURL.split("/")[8].split(".")[0])
                 logoutUser()
-                if (user.photoURL != null) delPhoto(user.photoURL.split("/").pop())
                 navigate("/")
             }
         } catch (error) {
@@ -249,13 +255,6 @@ export const Profile = () => {
                             className='border-b border-BaseGreen outline-0 text-lg p-1 bg-gray-100 rounded-md'
                         />
                     </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className='mt-2 p-2.5 rounded-sm pl-6 pr-6 w-max mx-auto bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
-                        {loading ? 'Mentés...' : 'Mentés'}
-                    </button>
 
                     <button
                         onClick={handleDelete}

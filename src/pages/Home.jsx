@@ -40,7 +40,7 @@ export const Home = () => {
 
                         <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute w-full text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
                                 {brands && brands.map((brand, index) => (
-                                    <div className='cursor-pointer' onClick={() => navigate('/allads')}>{brand.name}</div>
+                                    <div key={brand.name} className='cursor-pointer' onClick={() => navigate('/allads')}>{brand.name}</div>
                                 ))}
 
                             </div>

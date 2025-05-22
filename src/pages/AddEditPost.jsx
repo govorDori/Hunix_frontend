@@ -146,7 +146,7 @@ export const AddEditPost = () => {
             className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
             value={engineSize}
             onChange={(e) => setEngineSize(e.target.value)}
-            placeholder="Motor"
+            placeholder="Hengerűrtartalom (cm^3)"
           />
         </div>
 
@@ -156,7 +156,7 @@ export const AddEditPost = () => {
             className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
             value={usage}
             onChange={(e) => setUsage(e.target.value)}
-            placeholder="Kihasználtság"
+            placeholder="Állapota"
           />
         </div>
 

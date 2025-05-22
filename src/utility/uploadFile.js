@@ -21,12 +21,29 @@ export const uploadFile = async (file) => {
 
 const url = "https://hunix-backend.onrender.com"
 
-export const delPhoto=async (id) => {
-    console.log(id);
-    try {
-        await axios.delete(`${url}/post/${id}`)
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
+export const delPhoto = async (publicId) => {
+  console.log("Attempting to delete:", publicId); // Debug log
+  
+  try {
+    const response = await axios.delete(
+      'http://localhost:3000/api/delete-image',
+      {
+        data: { publicId },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    console.log("Deletion response:", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error("Full deletion error:", {
+      message: error.message,
+      response: error.response?.data,
+      request: error.config?.data
+    });
+    throw error;
+  }
+};
