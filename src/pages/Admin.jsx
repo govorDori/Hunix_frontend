@@ -6,6 +6,8 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/fi
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BrandContext } from '../utility/BrandContext';
+import { useForm } from 'react-hook-form';
+import { uploadFile } from '../utility/uploadFile';
 
 export const Admin = ({ ad }) => {
     const { user } = useContext(UserContext); // A bejelentkezett felhasználó lekérése
@@ -15,7 +17,7 @@ export const Admin = ({ ad }) => {
 
     //Márkák adatainak bevitele
     const [brandName, setBrandName] = useState('')
-    const [imageUrl, setImageUrl] = useState('')
+    const [imgPreview, setimgPreview] = useState('')
 
     const navigate = useNavigate();
 
@@ -24,6 +26,18 @@ export const Admin = ({ ad }) => {
             navigate('/');
         }
     }, [user, navigate]);
+
+    //useForm a törlésekre
+    const {
+        register,
+        handleSubmit,
+        setValue, //Fontos!
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            displayName: user?.displayName || "",
+        },
+    });
 
     // Hirdetések betöltése
     useEffect(() => {
@@ -64,27 +78,30 @@ export const Admin = ({ ad }) => {
     };
 
     // Ezt hívjuk meg a form küldésekor
-    const handleAddBrand = async (e) => {
-        e.preventDefault() // Megakadályozza, hogy az oldal újratöltődjön a form küldésekor
+    const handleAddBrand = async (data) => {
+        const file = data.file?.[0];
 
-        if (brandName && imageUrl) {
+        if (brandName && file) {
             try {
-                // Hozzáadjuk az új brandet a Firestore adatbázishoz
+                const uploaded = await uploadFile(file); // Cloudinary feltöltés
+                const imageUrl = uploaded.url;
+
                 const docRef = await addDoc(collection(db, 'Brands'), {
-                    name: brandName,
-                    imageUrl: imageUrl,
-                })
-                console.log('Márka hozzáadva:', docRef.id)
-                // Miután sikerült a hozzáadás, töröljük az inputokat
-                setBrandName('')
-                setImageUrl('')
+                    name: brandName, //Alias név name az csak alias, utána a lényegesebb hogy mit kap
+                    photoUrl: imageUrl,
+                });
+
+                console.log('Márka hozzáadva:', docRef.id);
+                setBrandName('');
+                setValue('file', null); // react-hook-form mező nullázása
             } catch (e) {
-                console.error('Hiba a márka hozzáadásakor:', e)
+                console.error('Hiba a márka hozzáadásakor:', e);
             }
         } else {
-            alert('Töltsd ki az összes mezőt!')
+            alert('Töltsd ki az összes mezőt!');
         }
-    }
+    };
+
 
 
     //useEffect ami kiírja az összes felhasználói fiókot
@@ -99,43 +116,60 @@ export const Admin = ({ ad }) => {
                 <h1>Felhasználók törlése</h1>
 
                 <div className='h-85 rounded-md p-3 overflow-y-scroll overflow-hidden'>
-                {users && users.map((user, index) => (
-                    <li key={user.id} className="flex mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md">
-                        <div>
-                            <p className="font-medium">{user.displayName || "Név nélkül"}</p>
-                            {/* Ide majd jön egy profilkép is */}
-                            <p className="text-sm text-gray-500">{user.email}</p>
-                            <p className="text-sm text-gray-500">Tel.:{user.phoneNumber}</p>
-                        </div>
-                        <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-700">
-                            <FaTrash />
-                        </button>
-                    </li>
-                ))}
+                    {users && users.map((user, index) => (
+                        <li key={user.id} className="flex mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md">
+                            <div>
+                                <p className="font-medium">{user.displayName || "Név nélkül"}</p>
+                                {/* Ide majd jön egy profilkép is */}
+                                <p className="text-sm text-gray-500">{user.email}</p>
+                                <p className="text-sm text-gray-500">Tel.:{user.phoneNumber}</p>
+                            </div>
+                            <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-700">
+                                <FaTrash />
+                            </button>
+                        </li>
+                    ))}
                 </div>
-                
+
             </div>
 
             {/* Márkák hozzáadása / törlése */}
             <div className="shadow-[#7C7979]/30 shadow-sm h-max w-full sm:w-130 p-2 rounded-md text-center font-bold text-lg mx-auto">
-                <form onSubmit={handleAddBrand}>
+                <form onSubmit={handleSubmit(handleAddBrand)}>
                     <div className='flex flex-col'>
-                    <input
-                    className='w-full border rounded-md p-2 mb-2'
-                        type="text"
-                        placeholder="Márka neve"
-                        value={brandName}
-                        onChange={(e) => setBrandName(e.target.value)}
-                        required
-                    />
-                    <input
-                    className='w-full border rounded-md p-2'
-                        type="text"
-                        placeholder="Kép URL"
-                        value={imageUrl}
-                        onChange={(e) => setImageUrl(e.target.value)}
-                        required
-                    />
+                        <input
+                            className='w-full border rounded-md p-2 mb-2'
+                            type="text"
+                            placeholder="Márka neve"
+                            value={brandName}
+                            onChange={(e) => setBrandName(e.target.value)}
+                            required
+                        />
+                        <input
+                            className='text-black  rounded-md flex mx-auto w-[80%] font-semibold'
+                            type="file"
+                            required
+                            {...register('file', {
+                                validate: (value) => {
+                                    if (!value[0]) return true
+                                    console.log(value);
+                                    const acceptedFormats = ["jpg", "jpeg", "png"]
+                                    const fileExtension = value[0].name.split(".").pop().toLowerCase()
+                                    if (!acceptedFormats.includes(fileExtension)) return setMsg({ type: "error", text: "Hibás vagy nem elfogadható fájlformátum!" });
+                                    if (value[0].size > 1 * 5000 * 1024) return setMsg({ type: "error", text: "A maximális fájlméret 5MB!" });
+                                    return true
+                                },
+                            })}
+                            onChange={(e) => setimgPreview(URL.createObjectURL(e.target.files[0]))}
+                        />
+
+                        {imgPreview && (
+                            <img
+                                src={imgPreview}
+                                alt="Előnézet"
+                                className="mx-auto size-24 rounded-full mt-2 border"
+                            />
+                        )}
                     </div>
                     <button className='border p-2 mt-2 rounded-md w-max mx-auto' type="submit">Feltöltés</button>
                 </form>
@@ -144,19 +178,19 @@ export const Admin = ({ ad }) => {
                 <h1>Jelenlegi márkák és képeik</h1>
 
                 <div className='h-50 rounded-md p-3 overflow-y-scroll overflow-hidden'>
-                {brands && brands.map((brand, index) => (
-                    <div key={brand.id} className='flex  flex-col mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md'>
-                        Neve: {brand.name}
-                        <img className='border size-20 rounded-full object-cover mx-auto' src={brand.photoUrl} alt="Foto" />
+                    {brands && brands.map((brand, index) => (
+                        <div key={brand.id} className='flex  flex-col mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md'>
+                            Neve: {brand.name}
+                            <img className='border size-20 rounded-full object-cover mx-auto' src={brand.photoUrl} alt="Foto" />
 
-                        <button onClick={() => handleDeleteBrand(brand.id)} className="text-red-500 mt-3 hover:text-red-700">
-                            <FaTrash />
-                        </button>
-                    </div>
+                            <button onClick={() => handleDeleteBrand(brand.id)} className="text-red-500 mt-3 hover:text-red-700">
+                                <FaTrash />
+                            </button>
+                        </div>
 
-                ))}
+                    ))}
                 </div>
-                
+
             </div>
 
             {/* Hirdetések törlése */}
