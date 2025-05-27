@@ -31,7 +31,7 @@ export const AddEditPost = () => {
     if (id) {
       const fetchPostData = async () => {
         try {
-          const docRef = doc(db, "Ads", id);
+          const docRef = doc(db, "Cars", id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
@@ -43,7 +43,7 @@ export const AddEditPost = () => {
             setModel(data.model);
             setDescription(data.description);
             setPrice(data.price);
-            setPhotoURL(data.photoURL);
+            setPhotoURL(data.photoUrl);
           } else {
             console.log("Nincs ilyen hirdetés.");
           }
@@ -72,7 +72,7 @@ export const AddEditPost = () => {
       model,
       description,
       price,
-      photoURL: placeholderURL, // Ide jön majd az egyedi Cloudinary-url
+      photoUrl: placeholderURL, // Ide jön majd az egyedi Cloudinary-url
       createdAt: new Date(),
       userId: user.uid, // A felhasználó ID-ja
     };
@@ -80,12 +80,12 @@ export const AddEditPost = () => {
     try {
       if (id) {
         // Frissítés (update) ha van 'id'
-        const docRef = doc(db, "Ads", id);
+        const docRef = doc(db, "Cars", id);
         await updateDoc(docRef, adData);
         console.log("Hirdetés sikeresen frissítve!");
       } else {
         // Hirdetés hozzáadása (insert)
-        await addDoc(collection(db, "Ads"), adData);
+        await addDoc(collection(db, "Cars"), adData);
         console.log("Hirdetés sikeresen mentve!");
       }
       navigate("/"); // Hirdetés mentése után a felhasználót visszairányítjuk a főoldalra
