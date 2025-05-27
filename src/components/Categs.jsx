@@ -60,7 +60,7 @@ export const Categs = () => {
                         >
                         <div>
                             <img
-                                src={ brand.imageUrl ||"./HunixTestCar.jpg"}
+                                src={ brand.photoUrl ||"./HunixTestCar.jpg"}
                                 alt=""
                                 className='object-cover w-[100px] h-[100px] rounded-full border border-gray-400'
                             />
