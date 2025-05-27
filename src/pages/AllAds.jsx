@@ -61,7 +61,7 @@ export const AllAds = () => {
                         <div className=" w-full flex  gap-x-2 flex-wrap">
                             <div>
                                 <img
-                                    src={ad.photoURL || 'https://via.placeholder.com/130x110'} // Kép URL vagy placeholder
+                                    src={ad.photoUrl[0] || 'https://via.placeholder.com/130x110'} // Kép URL vagy placeholder
                                     alt={ad.displayName || 'Fotó'}
                                     className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
                                 />

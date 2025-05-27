@@ -62,7 +62,7 @@ export const Categs = () => {
                             <img
                                 src={ brand.photoUrl ||"./HunixTestCar.jpg"}
                                 alt=""
-                                className='object-cover w-[100px] h-[100px] rounded-full border border-gray-400'
+                                className='object-contain w-[100px] h-[100px] rounded-full border border-gray-400'
                             />
                             <p className='text-[#939393]'>{brand.name}</p>
                         </div>

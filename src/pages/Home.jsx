@@ -80,9 +80,9 @@ export const Home = () => {
                 {/* Jobb oszlop (kép) */}
                 <div className='lg:flex shadow-[#7C7979]/20 shadow-md flex-col w-full hidden md:w-[49%] min-w-[10%]'>
                     <img
-                        src="HunixTestCar.jpg"
+                        src="https://res.cloudinary.com/adamblog/image/upload/v1748351625/toppng.com-car-parts-for-volvo-volvo-940-781x392_hlwb5b.png"
                         alt=""
-                        className='w-full h-[375px] object-cover rounded-lg'
+                        className='w-full h-[375px] object-contain rounded-lg'
                     />
                 </div>
             </div>

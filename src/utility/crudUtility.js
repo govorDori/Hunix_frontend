@@ -69,7 +69,7 @@ export const readSelectedCar = async (id, setCar) => {
 //"Ads" kollekciobol kikéri az összes hírdetést amit megjeleníthetünk
 export const readAllAds = async (setAds) => {
   try {
-    const querySnapshot = await getDocs(collection(dataBase, "Ads")); //"Ads" kollekció lekérése
+    const querySnapshot = await getDocs(collection(dataBase, "Cars")); //"Ads" kollekció lekérése
     const adsList = [];
     querySnapshot.forEach((doc) => {
       adsList.push({ id: doc.id, ...doc.data() }); // Adatok hozzáadása a listához
@@ -82,7 +82,7 @@ export const readAllAds = async (setAds) => {
 
 //Egy adott hirdetés kiolvasása az ads-ból
 export const getAds = async () => {
-  const adsRef = collection(dataBase, 'Ads'); //'Ads' kollekció
+  const adsRef = collection(dataBase, 'Cars'); //'Ads' kollekció
   const adsSnap = await getDocs(adsRef);
   const adsList = adsSnap.docs.map(doc => ({
       id: doc.id, // Hirdetés ID
@@ -93,7 +93,7 @@ export const getAds = async () => {
 
 //Az adott hirdetés törlése
 export const deletePost=async (id)=>{
-  const docRef=doc(dataBase,'Ads',id)
+  const docRef=doc(dataBase,'Cars',id)
   await deleteDoc(docRef)
 }
 
@@ -101,7 +101,7 @@ export const deletePost=async (id)=>{
 export const updatePost=async (id,{adName, brand, description, engineSize, horsePower, model, photoURL, price, usage})=>{
   // console.log('crudutility:',id,title,category,story);
    
-   const docRef=doc(dataBase,'Ads',id)
+   const docRef=doc(dataBase,'Cars',id)
    await updateDoc(docRef,{adName, brand, description, engineSize, horsePower, model, photoURL, price, usage})
  }
 

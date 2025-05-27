@@ -105,6 +105,8 @@ export const Profile = () => {
             if(avatar && file){
                 await delPhoto("hunix/"+user.photoURL.split("/")[8].split(".")[0])
             } 
+            console.log(user.photoURL);
+            
             const { url, id } = file ? await uploadFile(file) : {};
 
             // Frissítés Firestore-ban

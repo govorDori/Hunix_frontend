@@ -34,7 +34,7 @@ export const Garage = () => {
                         if (garage.length > 0) {
                             // Lekérjük a hirdetéseket az 'ads' collection-ből a mentett adatok alapján
                             const adsQuery = query(
-                                collection(db, "Ads"),
+                                collection(db, "Cars"),
                                 where("__name__", "in", garage) // Azonosító alapján kéri le a hirdetéseket
                             );
 
@@ -108,7 +108,7 @@ export const Garage = () => {
                         <div key={index} className="border rounded-md border-gray-300 w-full p-2 relative">
                             <h1 className="text-2xl font-bold">Auto neve: <span className="text-green-400">{ad.adName}</span></h1>
                             <img
-                                src={ad.photoURL || "https://via.placeholder.com/150"}
+                                src={ad.photoUrl[0] || "https://via.placeholder.com/150"}
                                 className="rounded-xl object-cover mt-2 mb-2 shadow-md shadow-[#7C7979]/20"
                                 alt="Foto helye"
                             />

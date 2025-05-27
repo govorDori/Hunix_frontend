@@ -75,7 +75,7 @@ export const Allitem = () => {
                         >
                             <div>
                                 <img
-                                    src={ad.photoURL || `./HunixTestCar.jpg`} // Kép URL vagy placeholder
+                                    src={ad.photoUrl[0] || `./HunixTestCar.jpg`} // Kép URL vagy placeholder
                                     alt=""
                                     className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
                                 />
