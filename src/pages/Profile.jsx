@@ -45,7 +45,6 @@ export const Profile = () => {
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-
     };
 
     //adatok betöltése rosszul (ebbe a formában azért nem megfelelő, mivel ez csak a user adatait olvassa ki és az extrán tárolt dolgokat nem (pl tel szám, cím))
@@ -84,7 +83,7 @@ export const Profile = () => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
 
-                //Input mezőkhöz rendelt infók (remélhetőleg módosíthatóak lesznek )
+                //Input mezőkhöz rendelt infók
                 setValue('phoneNumber', data.phoneNumber || '');
                 setValue('address', data.address || '');
                 setValue('displayName', data.displayName || '');
@@ -185,7 +184,7 @@ export const Profile = () => {
                             />
                         }
                     </div>
-                    <p>Jelenlegi felhasználónév:</p>
+                    <p className='mb-2'>Jelenlegi felhasználónév:</p>
                     <input
                         {...register('displayName')}
                         defaultValue={user?.displayName || ''}

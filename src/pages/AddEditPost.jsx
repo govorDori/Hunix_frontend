@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../utility/UserContext"; // UserContext importálása
 import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore"; // Firestore metódusok importálása
 import { useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { uploadFileToAd } from "../utility/uploadFile";
 
 export const AddEditPost = () => {
   const { user, db } = useContext(UserContext); // db és user elérése
@@ -24,7 +26,18 @@ export const AddEditPost = () => {
   const [model, setModel] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [photoURL, setPhotoURL] = useState(""); // Photo URL state
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+
+  //Képfeltöltéshez szükséges Formok
+  const { register, setValue, formState: { errors }, watch } = useForm({
+    defaultValues: {
+      displayName: user?.displayName || "",
+    },
+  })
+
+  // const selectedFiles = watch('file') //fájlok kinyerése
 
   // Ellenőrizzük, hogy ha az 'id' -t, ha van akkor betöltjük az adatokat azaz frissítünk
   useEffect(() => {
@@ -43,7 +56,10 @@ export const AddEditPost = () => {
             setModel(data.model);
             setDescription(data.description);
             setPrice(data.price);
-            setPhotoURL(data.photoUrl);
+            // photoUrl tömb, első elem url-jét használjuk previewhoz
+            if (data.photoUrl && data.photoUrl.length > 0) {
+              setPhotoPreview(data.photoUrl[0].url);
+            }
           } else {
             console.log("Nincs ilyen hirdetés.");
           }
@@ -59,10 +75,18 @@ export const AddEditPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Képfeltöltés Cloudinaryval történik, itt most egy teszt van csak!!!
-    const placeholderURL = "https://via.placeholder.com/150"; // Ide később a Cloudinary URL lesz
+    if (!selectedFile) {
+      console.error("Nincs fájl kiválasztva.");
+      return;
+    }
 
-    // Hirdetés adatainak előkészítése
+    const uploadedPhotoUrl = await uploadFileToAd(selectedFile);
+
+    if (!uploadedPhotoUrl) {
+      console.error("Nem sikerült feltölteni a képet.");
+      return;
+    }
+
     const adData = {
       adName,
       brand,
@@ -72,27 +96,27 @@ export const AddEditPost = () => {
       model,
       description,
       price,
-      photoUrl: placeholderURL, // Ide jön majd az egyedi Cloudinary-url
+      photoUrl: [uploadedPhotoUrl],  // LISTA formában kell
       createdAt: new Date(),
-      userId: user.uid, // A felhasználó ID-ja
+      userId: user.uid,
     };
 
     try {
       if (id) {
-        // Frissítés (update) ha van 'id'
         const docRef = doc(db, "Cars", id);
         await updateDoc(docRef, adData);
-        console.log("Hirdetés sikeresen frissítve!");
+        console.log("Hirdetés frissítve!");
       } else {
-        // Hirdetés hozzáadása (insert)
         await addDoc(collection(db, "Cars"), adData);
-        console.log("Hirdetés sikeresen mentve!");
+        console.log("Hirdetés mentve!");
       }
-      navigate("/"); // Hirdetés mentése után a felhasználót visszairányítjuk a főoldalra
+      navigate("/");
     } catch (error) {
-      console.error("Hiba a hirdetés mentése közben:", error);
+      console.error("Mentési hiba:", error);
     }
   };
+
+
 
   return (
     <div className="p-3 bg-BaseGreen/60 flex flex-col items-center shadow-md shadow-black/30 rounded-md md:w-8/12 w-max max-w-3xl m-2 mx-auto text-center">
@@ -112,12 +136,36 @@ export const AddEditPost = () => {
 
         <div className="mb-4">
           <label className="mr-3">Fotó a hirdetendő tárgyról:</label>
+
           <input
             type="file"
-            className="p-1 border rounded-md w-30 mx-auto"
-            onChange={(e) => setPhotoURL(placeholderURL)} // Placeholder URL beállítása fájl kiválasztáskor
+            accept="image/*"
+            {...register("file", {
+              required: true,
+              validate: (fileList) => {
+                if (!fileList.length) return "Legalább 1 képet válassz ki!";
+                const file = fileList[0];
+                const ext = file.name.split('.').pop().toLowerCase();
+                if (!['jpg', 'jpeg', 'png'].includes(ext)) return "Hibás fájltípus";
+                if (file.size > 5 * 1024 * 1024) return "Maximum 5MB/fájl";
+                return true;
+              },
+            })}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setSelectedFile(file);
+              setPhotoPreview(URL.createObjectURL(file));
+            }}
           />
-          {photoURL && <img src={photoURL} alt="Photo" className="mt-3 max-w-xs" />}
+
+          {photoPreview && (
+            <img
+              src={photoPreview}
+              alt="preview"
+              className="w-max h-32 object-cover rounded-md border mx-auto shadow mt-4"
+            />
+          )}
+
         </div>
 
         <div className="mb-4">

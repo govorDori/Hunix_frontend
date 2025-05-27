@@ -37,7 +37,7 @@ export const Admin = ({ ad }) => {
     //Hirdetés törlése
     const deleteAd = async (id) => {
         try {
-            await deleteDoc(doc(db, "Ads", id));
+            await deleteDoc(doc(db, "Cars", id));
             setAds(prev => prev.filter(ad => ad.id !== id)); // frontendről is eltűnik
         } catch (err) {
             console.error("Hiba a törlésnél: ", err);
@@ -147,7 +147,7 @@ export const Admin = ({ ad }) => {
                 {brands && brands.map((brand, index) => (
                     <div key={brand.id} className='flex  flex-col mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md'>
                         Neve: {brand.name}
-                        <img className='border size-20 rounded-full object-cover mx-auto' src={brand.imageUrl} alt="Foto" />
+                        <img className='border size-20 rounded-full object-cover mx-auto' src={brand.photoUrl} alt="Foto" />
 
                         <button onClick={() => handleDeleteBrand(brand.id)} className="text-red-500 mt-3 hover:text-red-700">
                             <FaTrash />
@@ -177,7 +177,7 @@ export const Admin = ({ ad }) => {
                         <div className='flex flex-col sm:flex-row gap-2'>
                             <div>
                                 <img
-                                    src={ad.photoURL || 'https://via.placeholder.com/130x110'}
+                                    src={ad.photoUrl[0] || 'https://via.placeholder.com/130x110'}
                                     alt={ad.adName || 'Fotó'}
                                     className='object-cover w-[130px] h-[110px] rounded-lg bg-BaseGreen'
                                 />

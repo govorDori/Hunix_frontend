@@ -9,8 +9,9 @@ const UserAds = ({ userId, onAdSelect }) => {
 
     // Hirdetések lekérése
     const fetchUserAds = async () => {
+        console.log("Lefut a fetch");
         try {
-            const adsQuery = query(collection(db, "Ads"), where("userId", "==", userId));
+            const adsQuery = query(collection(db, "Cars"), where("userId", "==", userId));
             const querySnapshot = await getDocs(adsQuery);
             let adsList = [];
             querySnapshot.forEach((doc) => {

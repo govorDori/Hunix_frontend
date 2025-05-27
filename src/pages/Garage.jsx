@@ -109,7 +109,7 @@ export const Garage = () => {
                             <h1 className="text-2xl font-bold">Auto neve: <span className="text-green-400">{ad.adName}</span></h1>
                             <img
                                 src={ad.photoUrl[0] || "https://via.placeholder.com/150"}
-                                className="rounded-xl object-cover mt-2 mb-2 shadow-md shadow-[#7C7979]/20"
+                                className="rounded-xl object-cover mx-auto w-full max-h-50 mt-2 mb-2 shadow-md shadow-[#7C7979]/20"
                                 alt="Foto helye"
                             />
                             <p className=" break-words">Leírás: <span className='text-gray-400'>{ad.description}</span></p>
