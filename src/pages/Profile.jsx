@@ -98,13 +98,18 @@ export const Profile = () => {
 
     const onSubmit = async (data) => {
         setLoading(true);
+       
         try {
             // Ha van fájl, töltsük fel (pl. profilkép) később hasznos lesz by:nndr
             const file = data?.file ? data?.file[0] : null;
-            if(avatar && file){
+           
+            
+            if(user.photoURL!=null && avatar && file){
+                console.log("elozo torolve uj feltoltve");
+                
                 await delPhoto("hunix/"+user.photoURL.split("/")[8].split(".")[0])
             } 
-            console.log(user.photoURL);
+            
             
             const { url, id } = file ? await uploadFile(file) : {};
 
@@ -175,14 +180,14 @@ export const Profile = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='text-center flex flex-col justify-center'>
                     
                     <div>
-                        {avatar &&
+                        
                             <img
-                                src={user && avatar ? avatar : "NoUser.jpg"}
+                                src={user && avatar ? avatar : "./NoUser.jpg"}
                                 alt="avatar img"
                                 width={"50px"}
                                 className='rounded-full object-cover mx-auto bg-white w-[50px] h-[50px] shadow shadow-gray-400/50'
                             />
-                        }
+                       
                     </div>
                     <p className='mb-2'>Jelenlegi felhasználónév:</p>
                     <input
