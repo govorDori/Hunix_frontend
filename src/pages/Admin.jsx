@@ -197,7 +197,7 @@ export const Admin = ({ ad }) => {
                             <img
                                 src={imgPreview}
                                 alt="Előnézet"
-                                className="mx-auto size-24 rounded-full mt-2 border"
+                                className="mx-auto size-24 rounded-full mt-2 border object-contain"
                             />
                         )}
                     </div>

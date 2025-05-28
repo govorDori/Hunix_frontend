@@ -5,9 +5,12 @@ import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { uploadFileToAd } from "../utility/uploadFile";
+import { BrandContext } from "../utility/BrandContext";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 
 export const AddEditPost = () => {
   const { user, db } = useContext(UserContext); // db és user elérése
+  const { brands } = useContext(BrandContext); //Márkák lekérése
   const { id } = useParams(); // id ami alapján frissítünk
   const navigate = useNavigate();
   const location = useLocation(); //Megnézhetjük hogy milyen útvonalról érkezett a felhasználó
@@ -26,6 +29,8 @@ export const AddEditPost = () => {
   const [model, setModel] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [isUsageMenuOpen, setIsUsageMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -116,7 +121,15 @@ export const AddEditPost = () => {
     }
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
+  const toggleUsageMenu = () => {
+    setIsUsageMenuOpen(!isUsageMenuOpen);
+  };
+
+  const usageList = ["Kiváló", "Alig használt", "Normál", "Hibás", "Totál kár"]
 
   return (
     <div className="p-3 bg-BaseGreen/60 flex flex-col items-center shadow-md shadow-black/30 rounded-md md:w-8/12 w-max max-w-3xl m-2 mx-auto text-center">
@@ -169,13 +182,28 @@ export const AddEditPost = () => {
         </div>
 
         <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            placeholder="Márka"
-          />
+          <button onClick={toggleMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
+            Márkák {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
+          </button>
+
+          <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
+            {brands && brands.map((brand, index) => (
+              <input
+                type="button"
+                key={brand.name}
+                className='cursor-pointer'
+                value={brand.name}
+                placeholder={brand.name}
+                onClick={(e) => {
+                  setBrand(e.target.value)
+                  toggleMenu()
+                }} />
+            ))}
+
+          </div>
+          <div className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
+            {brand}
+          </div>
         </div>
 
         <div className="mb-4">
@@ -199,13 +227,28 @@ export const AddEditPost = () => {
         </div>
 
         <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={usage}
-            onChange={(e) => setUsage(e.target.value)}
-            placeholder="Állapota"
-          />
+          <button onClick={toggleUsageMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
+            Állapot {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
+          </button>
+
+          <div className={`${isUsageMenuOpen ? 'block' : 'hidden'} absolute text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
+            {usageList.map((usage) => (
+              <input
+                type="button"
+                key={usage}
+                className='cursor-pointer'
+                value={usage}
+                placeholder={usage}
+                onClick={(e) => {
+                  setUsage(e.target.value)
+                  toggleUsageMenu()
+                }} />
+            ))}
+
+          </div>
+          <div className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
+            {usage}
+          </div>
         </div>
 
         <div className="mb-4">

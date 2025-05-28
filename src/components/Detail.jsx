@@ -103,7 +103,7 @@ export const Detail = ({ ad, onClose }) => {
                         <h1 className='italic text-green-700 font-bold text-xl flex items-center gap-2'><PiEngineFill className='size-5' /> Motor adatai</h1>
                         <p className="text-gray-700 mb-2"><strong>Hengerűrtartalom:</strong> {ad.engineSize} <span className=' font-semibold italic'>cm³</span></p>
                         <p className="text-gray-700 mb-2 "><strong>Teljesítmény:</strong> {ad.horsePower} <span className=' font-semibold italic'>LE</span></p>
-                        <p className="text-gray-700 mb-1"><strong>Kihasználtság:</strong> <span className='italic'>{ad.wear}</span></p>
+                        <p className="text-gray-700 mb-1"><strong>Kihasználtság:</strong> <span className='italic'>{ad.usage}</span></p>
                     </div>
                 </div>
 
