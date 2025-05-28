@@ -2,19 +2,19 @@
 
 <h3 style="text-align: center;">❗ FIGYELEM, az oldal fejlesztés alatt áll, az alább csatolt fotók NEM az oldal végleges verzióját tükrözik ❗</h3>
 
-<h3 style="font-weight: bold; color: lime;">Tartalomjegyzék</h3>
+<h3 style="font-weight: bold; color: #05df72;">Tartalomjegyzék</h3>
 
 1. A projektről
 2. Hogyan működik az oldal?
 3. Mit használunk?
 4. Kik dolgoztak a projekten? 
 
-<h3 style="font-weight: bold; color: lime;">A projektről</h3>
+<h3 style="font-weight: bold; color: #05df72;">A projektről</h3>
 
 A **Hunix** mindenki számára szabadon elérhető, itt felhasználók tölthetik fel eladásra szánt gépjárművüket, böngészhetnek mások által hirdetett autók között kedvükre. A kényelmesebb, személyreszabott keresés érdekében rendelkezésre áll egy márka szerinti szűrés és egy keresőmező, amivel szűkíthető a kör márkán belüli modell szerint is. Ha esetleg több, ízlésének és elvárásainak megfelelő lehetőséget talál, erre az esetre biztosítunk egy gombot, mellyel elmentheti kedvenceit egy külön oldalra. 
 **!FONTOS: ezen opciók elérése érdekében regisztráció szükséges (kivétel: böngészés, keresés/szűrés)!**
 
-<h3 style="font-weight: bold; color: lime;">Hogyan működik az oldal?</h3>
+<h3 style="font-weight: bold; color: #05df72;">Hogyan működik az oldal?</h3>
 
 **Vendég nézet (asztali számítógép és mobil):**
 
@@ -30,14 +30,22 @@ A **Hunix** mindenki számára szabadon elérhető, itt felhasználók töltheti
 
 - A **"Márkák"** lenyíló füllel használhatjuk a szűrőt, ahol számos márka elérhető, vagy a **"Megtekintés"** gombra kattintva az összes hirdetés megjelenik szűrés nélkül.
 
-- A **"Felkapott márkák"** szekció a hirdetések számától függ, például: 10 Ford, 3 Audi és 7 meghirdetett Fiat esetén a legnépszerűbb márka a Ford lesz, azután a Fiat, végül az Audi.
+- A **"Felkapott márkák"** szekció az utoljára közzétett hirdetéstől függ.
+
+
 
 <h4 style="font-weight: bold; margin-top: 40px;">Bejelentkezett felhasználó esetén:</h4>
 
 <img src="../Hunix_frontend/public/landingpageLoggedIn.png" style="width: 50%; margin-left: 20px;" alt="Landing Page When Logged In">
 <img src="../Hunix_frontend/public/landingpageLoggedInMobile.png" style="width: 11.3%;" alt="Landing Page When Logged In Mobile Mode">
 
-- Miután létrehoztunk egy fiókot, elérhetővé vált négy új menüpont: **"Profil"**, **"Garázs"**, **"Új hirdetés"** és **"Kijelentkezés"**
+- Miután létrehoztunk egy fiókot, elérhetővé vált négy új menüpont: **"Profil"**, **"Garázs"**, **"Új hirdetés"** és **"Kijelentkezés"** (+ **"Admin panel"**, amihez a fejlesztőknek van hozzáférésük kizárólag)
+
+
+<img src="../Hunix_frontend/public/adDetails.png" style="width: 20%; margin-left: 20px;" alt="An Ad's Details">
+
+- Középen, egy adott hirdetésre kattintva lehetőségünk van megtekinteni bővebb információt róla.
+
 
 <img src="../Hunix_frontend/public/myprofile.png" style="width: 30%; margin-left: 20px; margin-top: 15px">
 
@@ -54,7 +62,7 @@ A **Hunix** mindenki számára szabadon elérhető, itt felhasználók töltheti
 - A **"Kijelentkezés"**-sel visszakerülünk a főoldalra.
 
 
-<h3 style="font-weight: bold; color: lime;">Mit használunk?</h3>
+<h3 style="font-weight: bold; color: #05df72;">Mit használunk?</h3>
 
 - **GitHub**: A csapatmunka megvalósítása, verziókezelés érdekében és a feladatok felosztásához elengedhetetlen. Eddig feltöltött előrehaladásunk könnyen átlátható és nyomon követhető.
 
@@ -65,7 +73,7 @@ A **Hunix** mindenki számára szabadon elérhető, itt felhasználók töltheti
 - **Cloudinary**: Az autókról feltöltött képeket *Cloudinary*-n tároljuk, kezeljük, és egyszerre teszi lehetővé a képek átméretezését, előnyös megjelenését. Ez különösen fontos, hiszen egy jól megjelenített kép pozitív első benyomást kelthet számos vásárlóban. 
 
 
-<h3 style="font-weight: bold; color: lime;">Kik dolgoztak a projekten?</h3>
+<h3 style="font-weight: bold; color: #05df72;">Kik dolgoztak a projekten?</h3>
 
 - **Molnár Nándor**: 
     - Design
