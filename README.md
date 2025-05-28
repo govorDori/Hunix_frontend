@@ -1,6 +1,5 @@
 <h1 style="text-align: center;"> HUNIX - Egy megbízható, rugalmas autókereskedés</h1>
 
-<h3 style="text-align: center;">❗ FIGYELEM, az oldal fejlesztés alatt áll, az alább csatolt fotók NEM az oldal végleges verzióját tükrözik ❗</h3>
 
 <h3 style="font-weight: bold; color: #05df72;">Tartalomjegyzék</h3>
 
