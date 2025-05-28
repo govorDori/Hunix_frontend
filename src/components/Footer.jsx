@@ -21,9 +21,6 @@ export const Footer = () => {
 
 
                 <div className=' sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
-                    <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
-                        <img src="null" alt="" />
-                    </div>
                     <h1 className='font-bold text-xl tracking-wide'>Govorkovics Dóra</h1>
                     <div className='text-center'>
                         <p className='break-words  w-[250px]'>Szöveg magadról Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima natus labordolopernatur? Quas quaerat tenetur laudantium!</p>
@@ -34,22 +31,16 @@ export const Footer = () => {
                 </div>
 
                 <div className='sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
-                    <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
-                        <img src="null" alt="" />
-                    </div>
                     <h1 className='font-bold text-xl tracking-wide'>Várbogyai Ádám</h1>
                     <div className='text-center'>
-                        <p className='break-words  w-[250px]'>Szöveg magadról Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima natus labordolopernatur? Quas quaerat tenetur laudantium!</p>
-                        <p className='text-[#939393]'>Email:</p>
-                        <p className='text-[#939393]'>Tel.:</p>
-                        <p className='text-[#939393]'>Munkakör: asdasd</p>
+                        <p className='break-words  w-[250px]'>Kezdő programozó vagyok, főként weboldalak front és backend részéhez értek.</p>
+                        <p className='text-[#939393]'>Email: v.adam3000@gmail.com</p>
+                        <p className='text-[#939393]'>Tel.: 06302873725</p>
+                        <p className='text-[#939393]'>Munkakör: Programozó</p>
                     </div>
                 </div>
 
                 <div className='sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
-                    <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
-                        <img src="null" alt="" />
-                    </div>
                     <h1 className='font-bold text-xl tracking-wide'>Molnár Nándor</h1>
                     <div className='text-center'>
                         <p className='break-words  w-[250px]'>Szöveg magadról Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima natus labordolopernatur? Quas quaerat tenetur laudantium!</p>
