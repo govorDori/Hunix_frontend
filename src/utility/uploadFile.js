@@ -36,14 +36,14 @@ export const uploadFileToAd = async (file) => {
 };
 
 
-const url = "https://hunix-backend.onrender.com"
+//const url = "https://hunix-backend.onrender.com"
 
 export const delPhoto = async (publicId) => {
   console.log("Attempting to delete:", publicId); // Debug log
   
   try {
     const response = await axios.delete(
-      'http://localhost:3000/api/delete-image',
+      "https://hunix-backend.onrender.com",
       {
         data: { publicId },
         headers: {
