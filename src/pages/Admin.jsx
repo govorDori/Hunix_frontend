@@ -7,10 +7,10 @@ import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BrandContext } from '../utility/BrandContext';
 import { useForm } from 'react-hook-form';
-import { uploadFile } from '../utility/uploadFile';
+import { delPhoto, uploadFile } from '../utility/uploadFile';
 
 export const Admin = ({ ad }) => {
-    const { user } = useContext(UserContext); // A bejelentkezett felhasználó lekérése
+    const { user, setMsg } = useContext(UserContext); // A bejelentkezett felhasználó lekérése
     const [ads, setAds] = useState([]); // Hirdetéseket tároló állapot
     const [users, setUsers] = useState([]); //Felhasználók megjelenítése
     const { brands } = useContext(BrandContext); //Márkák lekérése
@@ -50,11 +50,21 @@ export const Admin = ({ ad }) => {
 
     //Hirdetés törlése
     const deleteAd = async (id) => {
-        try {
-            await deleteDoc(doc(db, "Cars", id));
-            setAds(prev => prev.filter(ad => ad.id !== id)); // frontendről is eltűnik
-        } catch (err) {
-            console.error("Hiba a törlésnél: ", err);
+        const adToDelete = ads?.find(ad => ad.id === id);
+        console.log(adToDelete);
+        if (adToDelete.photoUrl) {
+            try {
+                // Extract the path safely
+                const photoPath = adToDelete.photoUrl[0].split("/");
+                console.log(photoPath);
+                const photoId = photoPath[8].split(".")[0];
+                console.log(photoId);
+                await delPhoto("hunix/" + photoId);
+                await deleteDoc(doc(db, "Cars", id));
+                setAds(prev => prev.filter(ad => ad.id !== id)); // frontendről is eltűnik
+            } catch (err) {
+                console.error("Hiba a törlésnél: ", err);
+            }
         }
     };
 
@@ -67,15 +77,35 @@ export const Admin = ({ ad }) => {
 
     //Felhasználó törlése ( nem authból, csak Firestore-ból )
     const handleDelete = async (id) => {
+        await delPhoto("hunix/" + user.photoURL.split("/")[8].split(".")[0])
         await deleteDoc(doc(db, "Users", id));
         setUsers(prev => prev.filter(user => user.id !== id)); // lista frissítés
     };
 
     //egy márka(brand) törlése a brands collectinbol
+
     const handleDeleteBrand = async (id) => {
+        const brandToDelete = brands?.find(brand => brand.id === id);
+        console.log(brandToDelete);
+
+        if (brandToDelete.photoUrl) {
+            try {
+                // Extract the path safely
+                const photoPath = brandToDelete.photoUrl.split("/");
+                console.log(photoPath);
+                const photoId = photoPath[8].split(".")[0];
+                console.log(photoId);
+                await delPhoto("hunix/" + photoId);
+            } catch (error) {
+                console.error("Error deleting photo:", error);
+            }
+        }
         await deleteDoc(doc(db, "Brands", id));
         setUsers(prev => prev.filter(brands => brands.id !== id)); // lista frissítés
     };
+
+
+
 
     // Ezt hívjuk meg a form küldésekor
     const handleAddBrand = async (data) => {
@@ -181,7 +211,7 @@ export const Admin = ({ ad }) => {
                     {brands && brands.map((brand, index) => (
                         <div key={brand.id} className='flex  flex-col mb-2 justify-between items-center bg-white p-3 rounded-lg shadow-md'>
                             Neve: {brand.name}
-                            <img className='border size-20 rounded-full object-cover mx-auto' src={brand.photoUrl} alt="Foto" />
+                            <img className='border size-20 rounded-full object-contain mx-auto' src={brand.photoUrl} alt="Foto" />
 
                             <button onClick={() => handleDeleteBrand(brand.id)} className="text-red-500 mt-3 hover:text-red-700">
                                 <FaTrash />
