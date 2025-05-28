@@ -30,7 +30,7 @@ export const AddEditPost = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [isUsageMenuOpen, setIsUsageMenuOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -41,8 +41,6 @@ export const AddEditPost = () => {
       displayName: user?.displayName || "",
     },
   })
-
-  // const selectedFiles = watch('file') //fájlok kinyerése
 
   // Ellenőrizzük, hogy ha az 'id' -t, ha van akkor betöltjük az adatokat azaz frissítünk
   useEffect(() => {
@@ -122,7 +120,7 @@ export const AddEditPost = () => {
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsBrandMenuOpen(!isBrandMenuOpen);
   };
 
   const toggleUsageMenu = () => {
@@ -132,7 +130,8 @@ export const AddEditPost = () => {
   const usageList = ["Kiváló", "Alig használt", "Normál", "Hibás", "Totál kár"]
 
   return (
-    <div className="p-3 bg-BaseGreen/60 flex flex-col items-center shadow-md shadow-black/30 rounded-md md:w-8/12 w-max max-w-3xl m-2 mx-auto text-center">
+    <div className="p-2"> 
+      <div className="p-3 bg-BaseGreen/30 border-dotted border-3 border-BaseGreen flex flex-col items-center shadow-md shadow-black/30 rounded-md sm:w-7/12 w-full max-w-3xl m-2 mx-auto text-center">
       <h1 className="text-2xl font-bold mb-4">{id ? "Hirdetés módosítása" : "Új hirdetés hozzáadása"}</h1>
 
       <form onSubmit={handleSubmit} className="w-full">
@@ -140,19 +139,23 @@ export const AddEditPost = () => {
           <label className="mr-3">Hirdetés neve:</label>
           <input
             type="text"
-            className="border-b border-BaseGreen outline-0 text-xl p-1 bg-gray-100 rounded-md"
+            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
             value={adName}
             onChange={(e) => setAdName(e.target.value)}
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="mr-3">Fotó a hirdetendő tárgyról:</label>
+        <div className="mb-4 block">
+          <div>
+            <label className="mr-3">Fotó a hirdetendő tárgyról:</label>
+          </div>
 
-          <input
+          <div className="flex items-center justify-center">
+             <input
             type="file"
             accept="image/*"
+            className="w-30 border p-1 rounded-md border-black"
             {...register("file", {
               required: true,
               validate: (fileList) => {
@@ -170,6 +173,7 @@ export const AddEditPost = () => {
               setPhotoPreview(URL.createObjectURL(file));
             }}
           />
+          </div>
 
           {photoPreview && (
             <img
@@ -181,94 +185,104 @@ export const AddEditPost = () => {
 
         </div>
 
-        <div className="mb-4">
-          <button onClick={toggleMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
-            Márkák {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
-          </button>
+        <div className="flex flex-wrap justify-center mx-auto ">
+          <div className="mb-4 gap-3 justify-center w-max mx-auto">
+            <button onClick={toggleMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 text-black shadow-md shadow-black/20 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
+              Márkák {isBrandMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
+            </button>
 
-          <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
-            {brands && brands.map((brand, index) => (
-              <input
-                type="button"
-                key={brand.name}
-                className='cursor-pointer'
-                value={brand.name}
-                placeholder={brand.name}
-                onClick={(e) => {
-                  setBrand(e.target.value)
-                  toggleMenu()
-                }} />
-            ))}
+            <div className={`${isBrandMenuOpen ? 'block' : 'hidden'} absolute text-center mt-1 p-2 mx-auto border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
+              {brands && brands.map((brand, index) => (
+                <input
+                  type="button"
+                  key={brand.name}
+                  className='cursor-pointer'
+                  value={brand.name}
+                  placeholder={brand.name}
+                  onClick={(e) => {
+                    setBrand(e.target.value)
+                    toggleMenu()
+                  }} />
+              ))}
 
+            </div>
+            <div className="border-b w-max mx-auto mt-1 border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
+              {brand}
+            </div>
           </div>
-          <div className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
-            {brand}
-          </div>
-        </div>
 
-        <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={horsePower}
-            onChange={(e) => setHorsePower(e.target.value)}
-            placeholder="Lóerő"
-          />
-        </div>
+          <div className="mb-4 gap-3 justify-center w-max mx-auto">
+            <button onClick={toggleUsageMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 text-black shadow-md shadow-black/20 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
+              Állapot {isUsageMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
+            </button>
 
-        <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={engineSize}
-            onChange={(e) => setEngineSize(e.target.value)}
-            placeholder="Hengerűrtartalom (cm^3)"
-          />
-        </div>
+            <div className={`${isUsageMenuOpen ? 'block' : 'hidden'} absolute text-center p-2 mx-auto mt-1 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
+              {usageList.map((usage) => (
+                <input
+                  type="button"
+                  key={usage}
+                  className='cursor-pointer'
+                  value={usage}
+                  placeholder={usage}
+                  onClick={(e) => {
+                    setUsage(e.target.value)
+                    toggleUsageMenu()
+                  }} />
+              ))}
 
-        <div className="mb-4">
-          <button onClick={toggleUsageMenu} className='p-1.5 text-md break-words rounded-sm bg-BaseGreen w-max font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center flex items-center sm:pl-5 sm:pr-5 pl-2 pr-0'>
-            Állapot {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
-          </button>
-
-          <div className={`${isUsageMenuOpen ? 'block' : 'hidden'} absolute text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
-            {usageList.map((usage) => (
-              <input
-                type="button"
-                key={usage}
-                className='cursor-pointer'
-                value={usage}
-                placeholder={usage}
-                onClick={(e) => {
-                  setUsage(e.target.value)
-                  toggleUsageMenu()
-                }} />
-            ))}
-
-          </div>
-          <div className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
-            {usage}
+            </div>
+            <div className="border-b w-max mx-auto mt-1 border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md">
+              {usage}
+            </div>
           </div>
         </div>
 
-        <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            placeholder="Modell"
-          />
+        <div className="flex flex-wrap gap-3 items-center justify-center p-2">
+          <div>
+            <input
+              type="text"
+              className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
+              value={horsePower}
+              onChange={(e) => setHorsePower(e.target.value)}
+              placeholder="Lóerő"
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
+              value={engineSize}
+              onChange={(e) => setEngineSize(e.target.value)}
+              placeholder="Hengerűrtartalom (cm^3)"
+              required
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <input
-            type="text"
-            className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Ár"
-          />
+        <div className="flex flex-wrap gap-3  items-center justify-center p-2">
+          <div >
+            <input
+              type="text"
+              className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              placeholder="Modell"
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              className="border-b w-max border-BaseGreen outline-0 text-md p-2 bg-gray-100 rounded-md"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Ár"
+              required
+            />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -277,16 +291,18 @@ export const AddEditPost = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Autó leírása"
+            required
           />
         </div>
 
         <button
           type="submit"
-          className="border p-2 rounded-md bg-BaseGreen text-black"
+          className=" p-2 rounded-md bg-BaseGreen text-black shadow-md shadow-black/30"
         >
           {id ? "Módosítás" : "Meghirdetem"}
         </button>
       </form>
+    </div>
     </div>
   );
 };

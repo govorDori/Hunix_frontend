@@ -63,7 +63,7 @@ export const Allitem = () => {
                     {ads.map((ad) => (
                         <motion.div 
                             key={ad.id} 
-                            className='flex-shrink-0 justify-center flex-col flex p-2 bg-white shadow-[#7C7979]/20 shadow-md text-left rounded-md'
+                            className='flex-shrink-0 justify-center cursor-pointer active:scale-95 flex-col flex p-2 bg-white shadow-[#7C7979]/20 shadow-md text-left rounded-md'
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{

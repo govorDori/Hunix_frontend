@@ -105,8 +105,6 @@ export const Profile = () => {
            
             
             if(user.photoURL!=null && avatar && file){
-                console.log("elozo torolve uj feltoltve");
-                
                 await delPhoto("hunix/"+user.photoURL.split("/")[8].split(".")[0])
             } 
             

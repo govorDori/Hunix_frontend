@@ -38,7 +38,7 @@ export const Home = () => {
                             Márkák {isMenuOpen ? <GoTriangleUp className='text-3xl pt-1' /> : <GoTriangleDown className='text-3xl pt-1' />}
                         </button>
 
-                        <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute w-full text-center p-2 mx-auto mt-12 border border-gray-500 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
+                        <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute w-full text-center p-2 mx-auto mt-12 border border-gray-500 z-50 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
                                 {brands && brands.map((brand, index) => (
                                     <div key={brand.name} className='cursor-pointer' onClick={() => navigate('/allads')}>{brand.name}</div>
                                 ))}
@@ -60,8 +60,8 @@ export const Home = () => {
             {/* Kategória / hirdetés tároló */}
             <div className='mt-3  flex justify-center flex-wrap md:flex  lg:items-center lg:justify-center rounded-lg  gap-2 '>
                 {/* Bal oszlop*/}
-                <div className='md:flex lg:flex-col  lg:items-stretch items-center justify-center w-full gap-2  lg:w-[50%] min-w-[10%]'>
-                    <div className='shadow-[#7C7979]/20 md:h-full md:w-full min-w-[10%] max-w-[100%]  mx-auto shadow-md p-4 rounded-lg bg-white space-y-2'>
+                <div className='md:flex lg:flex-col lg:items-stretch items-center justify-center w-full gap-2  lg:w-[50%] min-w-[10%]'>
+                    <div className='shadow-[#7C7979]/20 md:h-full md:w-full min-w-[10%]  mx-auto shadow-md p-4 rounded-lg bg-white space-y-2'>
                         <h1 className='tracking-wide text-xl'>Böngéssz hirdetéseink közt!</h1>
                         <p className='text-[#939393] mt-[-10px]'>Találd meg a számodra járművet.</p>
                         <button
@@ -72,7 +72,7 @@ export const Home = () => {
                     </div>
 
                     {/* Kategóriák */}
-                    <div className='lg:mt-3  md:max-w-[100%]  lg:w-full lg:p-0 md:w-[50%] mt-2 md:mt-0'>
+                    <div className='lg:mt-3  md:max-w-[100%]  lg:w-full lg:p-0 md:w-[140%] mt-2 md:mt-0'>
                         <Categs />
                     </div>
                 </div>

@@ -20,7 +20,7 @@ export const Footer = () => {
             <div className='flex gap-2 justify-around flex-wrap'>
 
 
-                <div className=' w-max flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
+                <div className=' sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
                     <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
                         <img src="null" alt="" />
                     </div>
@@ -33,7 +33,7 @@ export const Footer = () => {
                     </div>
                 </div>
 
-                <div className=' w-max flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
+                <div className='sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
                     <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
                         <img src="null" alt="" />
                     </div>
@@ -46,7 +46,7 @@ export const Footer = () => {
                     </div>
                 </div>
 
-                <div className=' w-max flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
+                <div className='sm:w-max w-full flex flex-col justify-center items-center pr-5 pl-5 p-2 shadow-[#e0e0e0] shadow-md rounded-lg bg-white'>
                     <div className='object-cover w-[100px] h-[100px] rounded-full border border-[#939393]'>
                         <img src="null" alt="" />
                     </div>

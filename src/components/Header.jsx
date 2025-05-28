@@ -44,15 +44,12 @@ export const Header = () => {
       }, [user]);
     console.log("Admin vagy-e: "+isAdmin); //teszt miatt
     
-  
-    
-
-    
-
     return (
         <div>
             <div className='flex gap-7 items-center max-w-6xl mx-auto  justify-between p-2 flex-wrap'>
-                <div className='text-4xl' onClick={() => navigate('/')}>LOGO</div>
+                <div className='text-4xl' onClick={() => navigate('/')}>
+                    <img src="/HunixLogoMain.png" className='object-contain w-43 cursor-pointer'/>
+                </div>
 
                 {/* MID-méretig normál képernyőn*/}
                 <div className='gap-3 p-1 items-center flex-wrap justify-center md:flex hidden transition-all ease-in-out'>
