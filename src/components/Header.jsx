@@ -42,7 +42,7 @@ export const Header = () => {
     
         checkRole();
       }, [user]);
-    console.log("Admin vagy-e: "+isAdmin); //teszt miatt
+    // console.log("Admin vagy-e: "+isAdmin); //teszt miatt
     
     return (
         <div>
@@ -118,7 +118,7 @@ export const Header = () => {
                     )}
                     <div>
                         <img
-                            src="null"
+                            src={user && avatar ? avatar : "NoUser.jpg"}
                             alt=""
                             width={"50px"}
                             className='rounded-full object-cover border border-gray-300 bg-white w-[50px] h-[50px] shadow-[#7C7979]/20 shadow-md'

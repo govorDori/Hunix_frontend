@@ -10,6 +10,7 @@ import { BrandContext } from '../utility/BrandContext';
 export const Home = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { brands } = useContext(BrandContext); //Márkák lekérése
+    const [searchTerm, setSearchTerm] = useState(""); //kereséshez szükséges State
     const navigate = useNavigate();
 
     const toggleMenu = () => {
@@ -29,6 +30,9 @@ export const Home = () => {
                         type="text"
                         placeholder='Keresés'
                         className='p-2 border-gray-300 border rounded-sm w-full outline-0 placeholder-shown:text-gray-600'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && navigate('/allads', { state: { searchTerm } })}
                     />
                 </div>
 
@@ -39,17 +43,22 @@ export const Home = () => {
                         </button>
 
                         <div className={`${isMenuOpen ? 'block' : 'hidden'} absolute w-full text-center p-2 mx-auto mt-12 border border-gray-500 z-50 shadow-md shadow-black  bg-BaseGreen rounded-md flex flex-col gap-y-2`}>
-                                {brands && brands.map((brand, index) => (
-                                    <div key={brand.name} className='cursor-pointer' onClick={() => navigate('/allads')}>{brand.name}</div>
-                                ))}
+                            {brands && brands.map((brand, index) => (
+                                <div key={brand.name} className='cursor-pointer'
+                                    onClick={() => navigate('/allads', { state: { selectedBrand: brand.name } })}>
+                                    {brand.name}
+                                </div>
+                            ))}
 
-                            </div>
+                        </div>
 
 
                     </div>
 
 
-                    <button className='p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
+                    <button
+                        onClick={() => navigate('/allads', { state: { searchTerm } })}
+                        className='p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 transition-all cursor-pointer text-center'>
                         Keresés
                     </button>
                 </div>
@@ -65,8 +74,8 @@ export const Home = () => {
                         <h1 className='tracking-wide text-xl'>Böngéssz hirdetéseink közt!</h1>
                         <p className='text-[#939393] mt-[-10px]'>Találd meg a számodra járművet.</p>
                         <button
-                        onClick={() => navigate('./allads')}
-                        className='mt-2 p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 h-[45px] transition-all cursor-pointer text-center'>
+                            onClick={() => navigate('./allads')}
+                            className='mt-2 p-1.5 rounded-sm pl-6 pr-6 bg-BaseGreen font-semibold tracking-wider active:scale-95 h-[45px] transition-all cursor-pointer text-center'>
                             Megtekintés
                         </button>
                     </div>

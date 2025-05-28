@@ -78,8 +78,10 @@ export const AddEditPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //ha nincs kép kiválasztva nem lehet hirdetni
     if (!selectedFile) {
       console.error("Nincs fájl kiválasztva.");
+      alert("Tölts fel fotót a hirdetendő járművről!")
       return;
     }
 
@@ -131,7 +133,7 @@ export const AddEditPost = () => {
 
   return (
     <div className="p-2"> 
-      <div className="p-3 bg-BaseGreen/30 border-dotted border-3 border-BaseGreen flex flex-col items-center shadow-md shadow-black/30 rounded-md sm:w-7/12 w-full max-w-3xl m-2 mx-auto text-center">
+      <div className="p-3 bg-BaseGreen/50 border-dotted border-3 border-BaseGreen flex flex-col items-center shadow-md shadow-black/30 rounded-md sm:w-7/12 w-full max-w-3xl m-2 mx-auto text-center">
       <h1 className="text-2xl font-bold mb-4">{id ? "Hirdetés módosítása" : "Új hirdetés hozzáadása"}</h1>
 
       <form onSubmit={handleSubmit} className="w-full">

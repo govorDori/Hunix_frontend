@@ -47,7 +47,7 @@ export const Categs = () => {
                 >
                     {/* Egy map ami teszteli sok kategória esetén mi történik(később hasznos lesz) ide jöhetnek kocsi márkák és képei akár*/}
                     {brands && brands.map((brand, index) => (
-                        <motion.dev onClick={() => navigate('/allads')} key={brand.id}
+                        <motion.dev onClick={() => navigate('/allads', { state: { selectedBrand: brand.name } })} key={brand.id}
                         className='flex-shrink-0 text-center justify-center cursor-pointer items-center flex-col flex'
                         initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
                         animate={{ opacity: 1, scale: 1 , rotate: 0}}

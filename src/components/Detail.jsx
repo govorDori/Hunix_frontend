@@ -130,7 +130,7 @@ export const Detail = ({ ad, onClose }) => {
 
                         <button
                             onClick={handleDelete}
-                            className="w-full sm:w-60 text-sm mx-auto bg-red-500 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
+                            className="w-full sm:w-60 text-sm mx-auto cursor-pointer bg-red-500 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
                         >
                             Hirdetés törlése
                         </button>
@@ -142,7 +142,7 @@ export const Detail = ({ ad, onClose }) => {
                             {/* Hozzáadjak a garázshoz */}
                             <button
                                 onClick={handleAddToGarage}
-                                className="w-full sm:w-max text-sm mx-auto bg-green-700 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
+                                className="w-full sm:w-max text-sm mx-auto cursor-pointer bg-green-700 pr-6 font-semibold tracking-wider pl-6 text-white p-2 rounded-md"
                             >
                                 Hirdetés garázsba helyezése!
                             </button>
