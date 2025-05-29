@@ -43,7 +43,7 @@ export const delPhoto = async (publicId) => {
   
   try {
     const response = await axios.delete(
-      "https://hunix-backend.onrender.com",
+      'https://hunix-backend.onrender.com',
       {
         data: { publicId },
         headers: {
